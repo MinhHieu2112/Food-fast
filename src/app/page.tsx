@@ -1,95 +1,42 @@
-import Image from "next/image";
-import styles from "./page.module.css";
-
+import Header from "@/components/layout/header";
+import Hero from "@/components/layout/hero";
+import HomeMenu from "@/components/layout/homeMenu"
+import SectionHeaders from "@/components/layout/sectionHeader";
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+   <>
+    <Header />
+    <Hero />
+    <HomeMenu />
+    <section className="text-center my-16">
+      <SectionHeaders
+      subHeader={'Our story'}
+      mainHeader={'About us'}
+      />
+      <div className="text-gray-500 max-w-md mx-auto mt-4 flex flex-col gap-4">
+        <p>
+          We believe that a great pizza is not only about the gooey cheese or the crispy crust, but also about the passion we put into every step of preparation. We carefully select fresh ingredients every day and blend them with our signature recipes to create flavors that are both familiar and unique.
+        </p>
+        <p>
+          Our mission is to bring you hot, freshly baked pizzas with authentic Italian taste, while still being close to the Vietnamese palate. Whether you enjoy dining in or ordering takeaway, we want every slice to be a perfect moment to share with family and friends.
+        </p>
+      </div>
+    </section>
+    <section className="text-center my-8">
+      <SectionHeaders 
+        subHeader={'Dont\'t hesitate'}
+        mainHeader={'Contact us'} 
         />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
+        <div className="mt-8">
+          <a className="text-4xl underline text-gray-500" 
+          href="tel:+1234567899">
+            +1 234 567 899
           </a>
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    </section>
+    <footer className="border-t p-8 text-center text-gray-500 mt-16">
+      &copy; 2025 All rights reserved
+    </footer>
+   </>
   );
 }
