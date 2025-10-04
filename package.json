@@ -11,6 +11,10 @@
   "dependencies": {
     "@ant-design/nextjs-registry": "1.1.0",
     "antd": "5.27.4",
+    "bcrypt": "^6.0.0",
+    "mongodb": "^6.20.0",
+    "mongoose": "^8.19.0",
+    "mssql": "^12.0.0",
     "next": "15.5.4",
     "next-auth": "^4.24.11",
     "react": "19.1.0",
@@ -19,6 +23,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "3.3.1",
     "@tailwindcss/postcss": "^4.1.14",
+    "@types/bcrypt": "^6.0.0",
     "@types/node": "24.6.2",
     "@types/react": "19.2.0",
     "@types/react-dom": "19.2.0",
