@@ -8,6 +8,7 @@ export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const[loginInProgress, setLoginInProgress] = useState(false);
+    
     async function handleFormSubmit(ev) {
         ev.preventDefault();
         setLoginInProgress(true);
@@ -15,7 +16,8 @@ export default function LoginPage() {
         const result = await signIn('credentials', 
             {
                 email, 
-                password 
+                password,
+                callbackUrl: '/'
             });
 
         setLoginInProgress(false);
@@ -27,16 +29,16 @@ export default function LoginPage() {
             </h1>
             <form className="max-w-xs mx-auto" onSubmit={handleFormSubmit}>
                 <input type="email" name="email" placeholder="email" value={email}
-                    disabled={false}
+                    disabled={loginInProgress}
                     onChange={ev => setEmail(ev.target.value)} />
                 <input type="password" name="password" placeholder="password" value={password}
-                    disabled={false}
+                    disabled={loginInProgress}
                     onChange={ev => setPassword(ev.target.value)} />
                 <button disabled={loginInProgress} className="btn-register" type="submit">Login</button>
                 <div className="my-4 text-center text-gray-500">
                 or login with provider 
                 </div>
-                <button onClick={() => signIn('google', {redirect:'/'})} 
+                <button type="button" onClick={() => signIn('google', {callbackUrl:'/'})} 
                 className="btn-register !flex gap-4 justify-center">
                     <Image src={'/google.png'} alt={''} width={24} height={24} />
                     Login with google

@@ -13,7 +13,7 @@ export default function Header() {
         <Link href={''}>Menu</Link>
         <Link href={''}>About</Link>
         <Link href={''}>Contact</Link>
-        
+
       </nav>
       <nav className="flex items-center gap-8 text-gray-500 font-semibold">
         {status === 'authenticated' && (
@@ -23,9 +23,9 @@ export default function Header() {
         )}
         {status === 'unauthenticated' && (
           <>
-            <Link href={'/login'}>Login</Link>
+            <Link href={'/login'}> Login </Link>
             <Link href={'/register'} className="bg-primary rounded-full
-         text-white px-8 py-2">Register</Link>
+         text-white px-8 py-2"> Register </Link>
           </>
         )}
         

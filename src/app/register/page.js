@@ -2,11 +2,13 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link"
+import { signIn } from "next-auth/react"; 
+
 export default function RegisterPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState(''); 
     const [creatingUser, setCreatingUser] = useState(false);
-    const [userCreated, setUserCreated] = useState(true);
+    const [userCreated, setUserCreated] = useState(false);
     const [error, setError] = useState(false);
     async function handleFormSubmit(ev) {
         ev.preventDefault();
@@ -55,7 +57,8 @@ export default function RegisterPage() {
             <div className="my-4 text-center text-gray-500">
                 or login with provider 
             </div>
-            <button className="btn-register !flex gap-4 justify-center">
+            <button onClick={() => signIn('google', {callback:'/'})} 
+            className="btn-register !flex gap-4 justify-center">
                 <Image src={'/google.png'} alt={''} width={24} height={24} />
                 Login with google
             </button>
