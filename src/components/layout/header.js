@@ -1,14 +1,10 @@
 'use client'
 import { useSession, signOut } from "next-auth/react";
+import useUserName from "@/hooks/useUserName";
 import Link from "next/link";
 export default function Header() {
-    const session = useSession();
-    const status = session?.status;
-    const userData = session.data?.user;
-    let userName = userData?.name || userData?.email;
-    if (userName && userName.includes(' ')) {
-      userName = userName.split(' ')[0];
-    }
+    const { userName, status } = useUserName();
+
     return (
     <header className="flex items-center justify-between">
       <nav className="flex items-center gap-8 text-gray-500 font-semibold">

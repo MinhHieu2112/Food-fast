@@ -1,5 +1,5 @@
-import NextAuth from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 import {User} from '@/app/models/User';
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
@@ -40,4 +40,5 @@ export const authOptions = {
 
 const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST } 
+

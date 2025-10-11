@@ -27,7 +27,7 @@ export default function LoginPage() {
             <h1 className="text-center text-primary text-4xl mb-4">
                 Login
             </h1>
-            <form className="max-w-xs mx-auto" onSubmit={handleFormSubmit}>
+            <form className="max-w-xs mx-auto" onSubmit={(ev) => handleFormSubmit(ev)}>
                 <input type="email" name="email" placeholder="email" value={email}
                     disabled={loginInProgress}
                     onChange={ev => setEmail(ev.target.value)} />
@@ -36,7 +36,7 @@ export default function LoginPage() {
                     onChange={ev => setPassword(ev.target.value)} />
                 <button disabled={loginInProgress} className="btn-register" type="submit">Login</button>
                 <div className="my-4 text-center text-gray-500">
-                or login with provider 
+                or login with provider     
                 </div>
                 <button type="button" onClick={() => signIn('google', {callbackUrl:'/'})} 
                 className="btn-register !flex gap-4 justify-center">
