@@ -1,17 +1,28 @@
-import {User} from "@/app/models/User"
+import { User } from "@/models/User";
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 export async function POST(req) {
-    const body = await req.json();
-    const pass = body.password; 
-    mongoose.connect(process.env.MONGO_URL, { dbName: "Food-fast" });
-    if (!pass?.length || pass.length < 5) {
-        new Error('password must be at least 5 characters');
-    }
-    const notHashedPassword = pass;
-    const salt = bcrypt.genSaltSync(10);
-    body.password = hashedPassword;
+  await mongoose.connect(process.env.MONGO_URL, { dbName: "Food-fast" });
 
-    const createdUser = await User.create(body)
-    return Response.json(createdUser);
+  const body = await req.json();
+  const pass = body.password;
+
+  // Kiểm tra password
+  if (!pass || pass.length < 5) {
+    return Response.json(
+      { error: "Password must be at least 5 characters" },
+      { status: 400 }
+    );
+  }
+
+  // Băm mật khẩu
+  const salt = bcrypt.genSaltSync(10);
+  const hashedPassword = bcrypt.hashSync(pass, salt); 
+  body.password = hashedPassword;
+
+  // Tạo user mới
+  const createdUser = await User.create(body);
+
+  return Response.json(createdUser);
 }

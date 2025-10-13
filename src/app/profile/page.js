@@ -6,6 +6,7 @@ import Image from "next/image";
 import toast from "react-hot-toast"
 import '../../app/globals.css';
 import Link from "next/link"
+import UserTabs from "@/components/layout/tabs"
 
 export default function ProfilePage() {
     const { data: session, status, update } = useSession();
@@ -19,6 +20,7 @@ export default function ProfilePage() {
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
     const [isAdmin, setIsAdmin] = useState(false);
+    const [profileFetched, setProfileFetched] = useState(false);
     //const {status} = session;
     
     useEffect(() => {  
@@ -96,19 +98,9 @@ export default function ProfilePage() {
         }
     }
     return (
-        <section className="mt-8">
-            <div className="flex gap-2 mx-auto tabs jussttify-center">
-                <Link className="active" href={'/profile'}>Profile</Link>
-                {isAdmin && (
-                    <>
-                        <Link href={'/categories'}>Categories</Link>
-                        <Link href={'/menu-items'}>Menu Items</Link>
-                        <Link href={'/users'}>Users</Link>
-                    </>
-                )}
-            </div>
-            <h1 className="text-center text-primary text-4xl mb-4"></h1>
-            <div className="max-w-md mx-auto">
+        <section className="mt-8 max-w-md mx-auto">
+            <UserTabs isAdmin={isAdmin}/>
+            <div className="max-w-md mx-auto mt-8">
                 <div className="flex gap-4 items-center">
                     <div>
                         {/* <div className="p-2 rounded-lg relative">
@@ -131,7 +123,7 @@ export default function ProfilePage() {
                         <input
                             type="text"
                             placeholder="Full name"
-                            value={userName}
+                            value={userName || ''}
                             onChange={(ev) => setUserName(ev.target.value)}
                         />
                         </div>
@@ -141,28 +133,28 @@ export default function ProfilePage() {
                         </div>
                         <div>
                             <label>Phone</label>
-                            <input type="tel" placeholder="Phone number" value={phone} onChange={(ev) => setPhone(ev.target.value)}/>
+                            <input type="tel" placeholder="Phone number" value={phone || ''} onChange={(ev) => setPhone(ev.target.value)}/>
                         </div>
                         <div>
                             <label>Address</label>
-                            <input type="text" placeholder="Street Address" value={streetAddress} onChange={(ev) => setStreetAddress(ev.target.value)} />
+                            <input type="text" placeholder="Street Address" value={streetAddress || ''} onChange={(ev) => setStreetAddress(ev.target.value)} />
                         </div>
                         
                         <div className="flex gap-4">
                             <div>
                                 <label>Postal code </label>
-                                <input type="text" placeholder="Postal code" value={postalCode} onChange={(ev) => setPostalCode(ev.target.value)}/>
+                                <input type="text" placeholder="Postal code" value={postalCode || ''} onChange={(ev) => setPostalCode(ev.target.value)}/>
                             </div>
                             <div>
                                 <label>City</label>
-                            <input type="text" placeholder="City" value={city} onChange={(ev) => setCity(ev.target.value)}/>
+                                <input type="text" placeholder="City" value={city || ''} onChange={(ev) => setCity(ev.target.value)}/>
                             </div>
                         </div>
                         <label>Country</label>
                         <input 
                             type="text"
                             placeholder="Country"
-                            value={country}
+                            value={country || ''}
                             onChange={(ev) => setCountry(ev.target.value)}
                             />
                         <button className="bg-primary rounded-full text-white w-full py-2">

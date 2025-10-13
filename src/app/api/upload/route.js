@@ -44,3 +44,43 @@ export async function POST(req) {
     }
     return Response.json(true);
 } */
+
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
+});
+
+export async function POST(req) {
+  try {
+    const data = await req.formData();
+    const file = data.get("file");
+
+    if (!file) {
+      return Response.json({ error: "No file uploaded" }, { status: 400 });
+    }
+
+    // Chuyển file thành buffer
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    // Upload buffer lên Cloudinary
+    const uploadResult = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "foodfast" }, // ảnh sẽ nằm trong folder "foodfast"
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
+      stream.end(buffer);
+    });
+
+    return Response.json({ url: uploadResult.secure_url });
+  } catch (err) {
+    console.error("Upload failed:", err);
+    return Response.json({ error: "Upload failed" }, { status: 500 });
+  }
+}

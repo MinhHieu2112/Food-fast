@@ -32,7 +32,7 @@ label {
 button[type="submit"], .submit{
   @apply border-0 bg-primary text-white;
 }
-button[type="submit"].disabled, .submit:disabled{
+button[type="submit"]:disabled, .submit:disabled{
   @apply cursor-not-allowed bg-red-400;
 }
 div.tabs > * {
