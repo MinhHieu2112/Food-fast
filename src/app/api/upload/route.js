@@ -69,7 +69,7 @@ export async function POST(req) {
     // Upload buffer lên Cloudinary
     const uploadResult = await new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
-        { folder: "foodfast" }, // ảnh sẽ nằm trong folder "foodfast"
+        { folder: "menuItem" }, // ảnh sẽ nằm trong folder "foodfast"
         (error, result) => {
           if (error) reject(error);
           else resolve(result);
@@ -79,6 +79,7 @@ export async function POST(req) {
     });
 
     return Response.json({ url: uploadResult.secure_url });
+    
   } catch (err) {
     console.error("Upload failed:", err);
     return Response.json({ error: "Upload failed" }, { status: 500 });

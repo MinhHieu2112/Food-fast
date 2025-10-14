@@ -1,15 +1,41 @@
 "use client";
 import UserTabs from "@/components/layout/tabs"
 import UseProfile from "@/components/UseProfile"
-import UploadFile from "@/components/Upload"
 import Image from "next/image"
-import UploadImageBox from "@/components/Upload";
+import EditableImage from "@/components/layout/EditableImage"
 import {useState} from "react"
+import toast from "react-hot-toast"
+
 export default function MenuItemsPage() {
 
     const {loading, data} = UseProfile();
     const [image, setImage] = useState('');
+    const [name, setName] = useState('');
+    const [basePrice, setBasePrice] = useState('');
+    const [description, setDescription] = useState('');
 
+    async function handleFormSubmit(ev) {
+        ev.preventDefault();
+        console.log("data", {image, name, description});
+        const data = {image, name, description, basePrice}
+        const savingPromise = new Promise(async(resolve, reject) => {
+            const response = await fetch('/api/menu-items', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {'Content-Type' : 'application/json' },
+            });
+            if(response.ok) 
+                resolve();
+            else 
+                reject();
+        });
+
+        await toast.promise(savingPromise, {
+            loading: 'Saving this tasty item',
+            success: 'Saved',
+            error: 'Error',
+        });
+    } 
     if (loading) {
         return 'Loading user info';
     }
@@ -21,43 +47,30 @@ export default function MenuItemsPage() {
     return (
         <section className="mt-8 max-w-md mx-auto">
             <UserTabs isAdmin={true} />
-            <div className="max-w-md mx-auto mt-8">
-                <div className="flex gap-4 items-center">
-                    <div>
-                        <div className="p-2 rounded-lg relative">
-                            {/* <Image
-                                className="rounded-lg w-full h-full mb-1"
-                                    src={"" || "/default-avatar.png"}
-                                    width={250}
-                                    height={250}
-                                    alt="avatar"
-                                /> 
-                            <label>
-                                <input type="file" className="hidden" />
-                                <span className="block border rounded-lg p-2 text-center">Edit</span>
-                            </label> */}
-                            <UploadImageBox defaultImage={image} onUpload={setImage} />
-                        </div>
-                    </div> 
-                    <form className="flex-col gap-2 w-full max-w-sm">
-                        <div className="">
-                            <label>Item name</label>
-                            <input type="text"/>
-                        </div>
-                        <div>
-                            <label>Description</label>
-                            <input type="text"/>
-                        </div>
-                        <div>
-                            <label>Base Price</label>
-                            <input type="text"/>
-                        </div>
-                        <div>
-                            <button className="bg-primary rounded-full text-white px-10 py-2" type="submit">Save</button>
-                        </div>
-                    </form>
+
+            <form onSubmit={handleFormSubmit} className="mt-8 max-w-md mx-auto">
+            {/* Chia hàng ngang: UploadFile bên trái, form bên phải */}
+                <div className="flex items-start gap-4">
+                    {/* BÊN TRÁI: Upload ảnh */}
+                    <div className="w-1/3">
+                        <EditableImage onUpload={setImage} />
+                    </div>
+
+                    {/* BÊN PHẢI: Thông tin món ăn */}
+                    <div className="flex-1 flex-col gap-4">
+                        <label>Item name</label>
+                        <input type="text" value={name} onChange={ev => setName(ev.target.value)} />
+
+                        <label>Description</label>
+                        <textarea type="text" value={description} onChange={ev => setDescription(ev.target.value)} />
+
+                        <label>Base Price</label>
+                        <input type="text" value={basePrice}  onChange={ev => setBasePrice(ev.target.value)} />
+
+                        <button className="bg-primary rounded-full text-white px-10 py-2 mt-4 self-start" type="submit">Save</button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </section>
     );
 }
