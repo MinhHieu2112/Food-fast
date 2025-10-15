@@ -1,11 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function EditableImage({onUpload }) {
-  const [imageUrl, setImageUrl] = useState('');
+export default function EditableImage({value, onUpload }) {
+  const [imageUrl, setImageUrl] = useState(value || '');
   const [uploading, setUploading] = useState(false);
+  
+  useEffect(() => {
+    setImageUrl(value || '');
+  }, [value]);
 
   async function handleFileChange(e) {
     const file = e.target.files?.[0];
