@@ -48,6 +48,26 @@ export default function CategoriesPage() {
         });
     }
 
+    function handleDeleteClick(_id) {
+        const promise = new Promise(async(resolve, reject) => {
+        const response = await fetch('/api/categories?_id='+_id, {
+            method: 'DELETE',
+        });
+        if (response.ok) {
+            resolve();
+        } else {
+            reject();
+        }
+        });
+
+        toast.promise(promise, {
+            loading: 'Deleting...',
+            success: 'Deleted',
+            error: 'Error, sorry...',
+        });
+        fetchCategories();
+    }
+
     if (profileLoading) {
         return 'Loading user info...'
     }
@@ -71,27 +91,45 @@ export default function CategoriesPage() {
                                 onChange={ev => setCategoryName(ev.target.value)}
                         />
                     </div>
-                    <div className="pb-2">
-                        <button type="submit" className="bg-primary rounded-full text-white px-10 py-2">
+                    <div className="pb-2 flex gap-2">
+                        <button type="submit" className="btn-register bg-primary rounded-full text-white px-10 py-2 ">
                             {editedCategory ? 'Update' : 'Create'}
+                        </button>
+                        <button type="button"
+                                className="btn-register px-10 py-2 hover:bg-gray-200"
+                                onClick={() => {setEditedCategory(null);
+                                                setCategoryName('');
+                                }}>
+                            Cancel
                         </button>
                     </div>
                 </div>
             </form>
             <div>
-                <h2 className="mt-8 text-sm text-gray-500">Edit category:</h2>
+                <h2 className="mt-8 text-sm text-gray-500">Existing Categories</h2>
                 
                 {categories?.length > 0 && categories.map(c => (
-                    <button key={c._id || c.name} 
-                        onClick={() => {
-                            setEditedCategory(c);
-                            setCategoryName(c.name);
-                        }}
-                        className="bg-gray-200 text-gray-700 rounded-xl px-4 py-2 mb-1 text-left w-full hover:bg-gray-300 transition-all"
-                        
-                        >
-                        <span>{c.name}</span>
-                    </button>
+                    <div key={c._id} className="bg-gray-100 rounded-xl p-2 px-4 flex items-center justify-between gap-1 mb-1 text-sm ">
+                        <span
+                            className="cursor-pointer">
+                                {c.name}
+                        </span>
+                        <div className="flex gap-2">
+                            <button type="button" 
+                                    className="bg-white border border-gray-300 rounded-md px-5 hover:bg-gray-200"
+                                    onClick={() => {
+                                        setEditedCategory(c);
+                                        setCategoryName(c.name);
+                                }}>
+                                        Edit
+                            </button>
+                            <button type="button" 
+                                    className="bg-white border border-gray-300 rounded-md px-3 hover:bg-gray-200"
+                                    onClick={() => handleDeleteClick(c._id)}>
+                                        Delete
+                            </button>
+                        </div>
+                    </div>
                 ))}
             </div>
         </section>

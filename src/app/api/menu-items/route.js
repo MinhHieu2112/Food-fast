@@ -22,8 +22,10 @@ export async function POST(req) {
       description: data.description,
       basePrice: data.basePrice,
       image: data.image, // <-- link Cloudinary ở đây
+      sizes: data.sizes,
+      extraIngredientPrices: data.extraIngredientPrices,
     });
-
+    console.log("✅ Created menu item:", menuItem);
     return Response.json(menuItem);
   } catch (err) {
     console.error("❌ Error creating menu item:", err);
@@ -34,7 +36,12 @@ export async function POST(req) {
 export async function PUT(req) {
   mongoose.connect(process.env.MONGO_URL);
   const {_id, ...data} = await req.json();
-  await MenuItem.findByIdAndUpdate(_id, data);
+  await MenuItem.findByIdAndUpdate(_id, {
+    ...data,
+    sizes: data.sizes || [],
+    extraIngredientPrices: data.extraIngredientPrices || [],
+  });
+  console.log("✅ Updated menu item:", _id);
   return Response.json(true);
 }
 
