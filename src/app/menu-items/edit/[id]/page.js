@@ -8,6 +8,8 @@ import toast from "react-hot-toast"
 import Link from "next/link"
 import Left from "@/components/icons/left"
 import { useParams } from 'next/navigation';
+import DeleteButton from "@/components/DeleteButton"
+
 
 export default function EditMenuItemPage() {
     const {id} = useParams();
@@ -58,7 +60,27 @@ export default function EditMenuItemPage() {
         });
 
         setRedirectToItems(true);
-    } 
+    }
+    
+    async function handleDeleteClick() {
+        const promise = new Promise(async (resolve, reject) => {
+            const res = await fetch('/api/menu-items?_id=' + id, {
+                method: 'DELETE',
+            });
+            if (res.ok) {
+                resolve();
+            } else {
+                reject();
+            }
+        });
+        toast.promise(promise, {
+            loading: 'Deleting...',
+            success: 'Deleted',
+            error: 'Error, sorry...',
+        });
+        setRedirectToItems(true);
+    }
+
 
     if (redirectToItems) {
         return redirect('/menu-items');
@@ -73,15 +95,21 @@ export default function EditMenuItemPage() {
     }
 
     return (
-        <section className="mt-8 max-w-md mx-auto">
+        <section className="mt-8 max-w-2xl mx-auto">
             <UserTabs isAdmin={true} />
-            <div className="max-w-md mx-auto mt-8">
+            <div className="max-w-2xl mx-auto mt-8">
                 <Link href={'/menu-items'} className="button">
                     <Left />
                     <span>Show all menu items</span>
                 </Link>
             </div>
             <MenuItemForm menuItem={menuItem} onSubmit={handleFormSubmit}/>
+            <div className="max-w-lg mx-auto mt-2">
+                <div className="max-w-xs ml-auto pl-9.5">
+                    <DeleteButton label="Delete this menu item" 
+                                onDelete={handleDeleteClick}/>
+                </div>
+            </div>
         </section>
     );
 }

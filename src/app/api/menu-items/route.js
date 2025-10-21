@@ -11,11 +11,15 @@
 import mongoose from "mongoose";
 import { MenuItem } from "@/models/Menu-items";
 
+
 export async function POST(req) {
   try {
     await mongoose.connect(process.env.MONGO_URL);
     const data = await req.json();
-
+    // 🩹 Chặn lỗi ObjectId rỗng
+    if (!data.category || data.category === '') {
+      delete data.category;
+    }
     // Lưu vào MongoDB
     const menuItem = await MenuItem.create({
       name: data.name,
@@ -50,4 +54,12 @@ export async function GET() {
   return Response.json(
     await MenuItem.find()
   );
+}
+
+export async function DELETE(req) {
+    mongoose.connect(process.env.MONGO_URL);
+    const url = new URL(req.url);
+    const _id = url.searchParams.get('_id');
+    await MenuItem.deleteOne({_id});
+    return Response.json(true);
 }

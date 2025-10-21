@@ -28,7 +28,7 @@ export default function MenuItemsPage() {
     }
 
     return (
-        <section className="mt-8 max-w-md mx-auto">
+        <section className="mt-8 max-w-2xl mx-auto">
             <UserTabs isAdmin={true} />
             <div className="mt-8">
                 <Link 
@@ -46,7 +46,10 @@ export default function MenuItemsPage() {
                         className="bg-gray-200 rounded-lg p-4">
                         <div className="relative">
                             <Image className="rounded-md"
-                                src={item.image} alt={''} width={200} height={200} />
+                                    src={item.image || '/no-image.jpg'} 
+                                    alt={item.name || 'Menu item'} 
+                                    width={200} 
+                                    height={200} />
                         </div>
                         <div className="text-center">
                             {item.name}

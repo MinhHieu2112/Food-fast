@@ -3,6 +3,8 @@ import UserTabs from "@/components/layout/tabs";
 import {useEffect, useState} from "react";
 import UseProfile from "@/components/UseProfile"
 import toast from "react-hot-toast"
+import DeleteButton from "@/components/DeleteButton"
+
 export default function CategoriesPage() {
     const [CategoryName, setCategoryName] = useState('');
     const [categories, setCategories] = useState([]);
@@ -75,7 +77,7 @@ export default function CategoriesPage() {
         return 'Not an admin';
     }
     return (
-        <section className="mt-8 max-w-md mx-auto">
+        <section className="mt-8 max-w-2xl mx-auto">
             <UserTabs isAdmin={true} />
             <form className="mt-8" onSubmit={handleCategorySubmit}>
                 <div className="flex gap-2 items-end">
@@ -116,18 +118,14 @@ export default function CategoriesPage() {
                         </span>
                         <div className="flex gap-2">
                             <button type="button" 
-                                    className="bg-white border border-gray-300 rounded-md px-5 hover:bg-gray-200"
+                                    className="btn-register bg-white hover:bg-gray-200"
                                     onClick={() => {
                                         setEditedCategory(c);
                                         setCategoryName(c.name);
                                 }}>
                                         Edit
                             </button>
-                            <button type="button" 
-                                    className="bg-white border border-gray-300 rounded-md px-3 hover:bg-gray-200"
-                                    onClick={() => handleDeleteClick(c._id)}>
-                                        Delete
-                            </button>
+                            <DeleteButton label="Delete" onDelete={() => handleDeleteClick(c._id)} />
                         </div>
                     </div>
                 ))}

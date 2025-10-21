@@ -6,7 +6,7 @@ import {useState} from "react"
 export default function UserTabs({isAdmin}) {
     const path = usePathname();
     return (
-        <div className="flex gap-2 mx-auto tabs jussttify-center">
+        <div className="flex gap-2 mx-auto tabs justify-center">
                 <Link 
                     className={path === '/profile' ? 'active' : ''} 
                     href={'/profile'}
@@ -28,8 +28,14 @@ export default function UserTabs({isAdmin}) {
                                 Menu Items
                         </Link>
                         <Link 
+                            href={'/orders'}
+                            className={path === '/orders' ? 'active' : ''}
+                            >
+                                Orders
+                        </Link>
+                        <Link 
                             href={'/users'}
-                            className={path === '/users' ? 'active' : ''}
+                            className={path.includes('/users') ? 'active' : ''}
                             >
                                 Users
                         </Link>
