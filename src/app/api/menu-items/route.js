@@ -2,19 +2,19 @@
 // import mongoose from "mongoose";
 
 // export async function POST(req) {
-//     mongoose.connect(process.env.MONGO_URL);
+//     await connectToDB();
 //     const data = await req.json();
 //     const menuItemDoc = await MenuItem.create(data);
 //     return Response.json(menuItemDoc);
 // }
 
-import mongoose from "mongoose";
+import connectToDB from "@/libs/mongoConnect";
 import { MenuItem } from "@/models/Menu-items";
 
 
 export async function POST(req) {
   try {
-    await mongoose.connect(process.env.MONGO_URL);
+    await await connectToDB();
     const data = await req.json();
     // 🩹 Chặn lỗi ObjectId rỗng
     if (!data.category || data.category === '') {
@@ -38,7 +38,7 @@ export async function POST(req) {
 }
 
 export async function PUT(req) {
-  mongoose.connect(process.env.MONGO_URL);
+  await connectToDB();
   const {_id, ...data} = await req.json();
   await MenuItem.findByIdAndUpdate(_id, {
     ...data,
@@ -50,14 +50,14 @@ export async function PUT(req) {
 }
 
 export async function GET() {
-  mongoose.connect(process.env.MONGO_URL);
+  await connectToDB();
   return Response.json(
     await MenuItem.find()
   );
 }
 
 export async function DELETE(req) {
-    mongoose.connect(process.env.MONGO_URL);
+    await connectToDB();
     const url = new URL(req.url);
     const _id = url.searchParams.get('_id');
     await MenuItem.deleteOne({_id});

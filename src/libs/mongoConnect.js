@@ -29,3 +29,31 @@ if (process.env.NODE_ENV === "development") {
 // separate module, the client can be shared across functions.
 export default clientPromise 
 */
+
+import mongoose from "mongoose";
+
+let isConnected = false;
+
+export default async function connectToDB() {
+  if (isConnected) {
+    // Đã có kết nối đang mở → tái sử dụng
+    return;
+  }
+
+  const uri = `${process.env.MONGO_URL}/food-fast`;
+
+  if (!uri) {
+    throw new Error("Missing MongoDB connection string in .env");
+  }
+
+  // Nếu chưa có kết nối → tạo kết nối mới
+  try {
+    await mongoose.connect(uri, {
+      serverSelectionTimeoutMS: 5000,
+    });
+    isConnected = true;
+    console.log("MongoDB connected");
+  } catch (error) {
+    console.error("MongoDB connection error:", error);
+  }
+}

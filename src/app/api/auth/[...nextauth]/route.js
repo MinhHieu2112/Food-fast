@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import {User} from '@/models/User';
-import mongoose from "mongoose";
+import connectToDB from "@/libs/mongoConnect";
 import bcrypt from "bcrypt";
 import GoogleProvider from "next-auth/providers/google";
 //import { MongoDBAdapter } from "@auth/mongodb-adapter"
@@ -25,7 +25,7 @@ export const authOptions = {
           const email = credentials?.email;
           const password = credentials?.password;
 
-          mongoose.connect(process.env.MONGO_URL);
+          await connectToDB();
           const user = await User.findOne({email});
           const password0k = user && bcrypt.compareSync(password, user.password);
 

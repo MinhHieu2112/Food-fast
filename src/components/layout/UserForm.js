@@ -2,6 +2,8 @@
 import {useState} from "react";
 import {useEffect} from "react";
 import useProfile from "@/components/UseProfile"
+import Address from "@/components/layout/Address"
+
 export default function UserForm({user, onSave}) {
     console.log(user);
     const [userName, setUserName] = useState('');
@@ -13,6 +15,14 @@ export default function UserForm({user, onSave}) {
     const [country, setCountry] = useState('');
     const [admin, setAdmin] = useState(user?.admin || false);
     const {data: loggedInUserData} = useProfile();
+
+    function handleAddressChange(propName, value) {
+        if (propName === 'phone') setPhone(value);
+        if (propName === 'streetAddress') setStreetAddress(value);
+        if (propName === 'postalCode') setPostalCode(value);
+        if (propName === 'city') setCity(value);
+        if (propName === 'country') setCountry(value);
+    }
 
     useEffect(() => {
         console.log("user data from API ===>", user);
@@ -68,47 +78,22 @@ export default function UserForm({user, onSave}) {
                     <label>Email</label>
                     <input type="email" disabled value={user?.email || ''} />
                 </div>
-                <div>
-                    <label>Phone</label>
-                    <input type="tel" placeholder="Phone number" value={phone || ''} onChange={(ev) => setPhone(ev.target.value)}/>
-                </div>
-                <div>
-                    <label>Address</label>
-                    <input type="text" placeholder="Street Address" value={streetAddress || ''} onChange={(ev) => setStreetAddress(ev.target.value)} />
-                </div>
-                
-                <div className="grid grid-cols-2 gap-2">
-                    <div>
-                        <label>Postal code </label>
-                        <input type="text" placeholder="Postal code" value={postalCode || ''} onChange={(ev) => setPostalCode(ev.target.value)}/>
-                    </div>
-                    <div>
-                        <label>City</label>
-                        <input type="text" placeholder="City" value={city || ''} onChange={(ev) => setCity(ev.target.value)}/>
-                    </div>
-                </div>
-                <label>Country</label>
-                <input 
-                    type="text"
-                    placeholder="Country"
-                    value={country || ''}
-                    onChange={(ev) => setCountry(ev.target.value)}
-                    />
+                <Address addressProps={{phone, streetAddress, postalCode, city, country}}
+                        setAddressProp={handleAddressChange}/>
                     {loggedInUserData?.isAdmin && (
-                    <div>
-                        {JSON.stringify(admin)}
-                        <label htmlFor="adminCb" className="p-2 inline-flex items-center gap-2">
-                            <input id="adminCb" type="checkbox"
-                                    checked={admin === true || admin === 'true'}
-                                    onChange={ev => setAdmin(ev.target.checked)}/>    
-                            <span>Admin</span>
-                        </label>
-                    </div>
+                        <div>
+                            <label htmlFor="adminCb" className="p-2 inline-flex items-center gap-2">
+                                <input id="adminCb" type="checkbox"
+                                        checked={admin === true || admin === 'true'}
+                                        onChange={ev => setAdmin(ev.target.checked)} />    
+                                <span>Admin</span>
+                            </label>
+                        </div>
                     )}
                 <button className="bg-primary btn-register" type="submit">
                     Save
                 </button>
             </form>
         </div>
-        );
+    );
 }

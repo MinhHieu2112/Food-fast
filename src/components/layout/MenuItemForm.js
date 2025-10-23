@@ -12,6 +12,20 @@ export default function MenuItemForm({onSubmit, menuItem}) {
         const [category, setCategory] = useState(menuItem?.category || '');
         const [categories, setCategories] = useState(menuItem?.categories || []);
 
+          // THÊM EFFECT NÀY - update state khi menuItem thay đổi
+        useEffect(() => {
+            if (menuItem) {
+            setImage(menuItem.image || '');
+            setName(menuItem.name || '');
+            setBasePrice(menuItem.basePrice || '');
+            setDescription(menuItem.description || '');
+            setSizes(menuItem.sizes || []);
+            setExtraIngredientPrices(menuItem.extraIngredientPrices || []);
+            setCategory(menuItem.category || '');
+            }
+        }, [menuItem]); // Chạy lại khi menuItem thay đổi
+
+
         useEffect(() => {
             fetch('/api/categories').then(res => {
                 res.json().then(categories => {

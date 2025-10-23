@@ -31,12 +31,12 @@
 // }
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import mongoose from "mongoose";
+import connectToDB from "@/libs/mongoConnect"
 import { getServerSession } from "next-auth";
 import { User } from "@/models/User";
 
 export async function PUT(req) {
-  mongoose.connect(`${process.env.MONGO_URL}/food-fast`);
+  await connectToDB();
 
   const data = await req.json();
   const {_id, name, ...otherUserInfo} = data;
@@ -57,7 +57,7 @@ export async function PUT(req) {
 }
 
 export async function GET(req) {
-  mongoose.connect(`${process.env.MONGO_URL}/food-fast`);
+  await connectToDB();
   const url = new URL(req.url);
   const _id = url.searchParams.get('_id');
   
