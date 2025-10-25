@@ -81,7 +81,6 @@ export default function EditMenuItemPage() {
         setRedirectToItems(true);
     }
 
-
     if (redirectToItems) {
         return redirect('/menu-items');
     }

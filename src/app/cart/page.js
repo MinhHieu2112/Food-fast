@@ -40,7 +40,7 @@ export default function CartPage() {
             <div className="text-center">
                 <SectionHeaders mainHeader="Cart" />
             </div>
-            <div className="mt-4 grid gap-4 grid-cols-2">
+            <div className="mt-8 grid gap-8 grid-cols-2">
                 <div>
                      {cartProducts?.length === 0 && (
                         <div>No products in your shopping cart</div>
@@ -54,15 +54,17 @@ export default function CartPage() {
                             <h3 className="font-semibold">
                                 {product.name}
                             </h3>
-                            {product.sizes && (
-                                <div className="text-sm "> 
-                                    Size: <span>{product.sizes[0].name} {product.sizes[0].price}</span>
+                            {product.sizes?.length > 0 && (
+                                <div className="text-sm"> 
+                                    Size: <span>{product.sizes[0].name} ${product.sizes[0].price}</span>
                                 </div>
                             )}
-                            {product.extraIngredientPrices?.length > 0 && (
+                            {product.extras?.length > 0 && (
                                 <div className="text-sm text-gray-500">
-                                    {product.extraIngredientPrices.map(extra => (
-                                        <div key={extra._id}>{extra.name} {extra.price}</div>
+                                    {product.extras.map((extra, index) => (
+                                        <div key={`${extra._id}-${index}`}>
+                                            Extra: <span>{extra.name} ${extra.price}</span>
+                                        </div>
                                     ))}
                                 </div>
                             )}
@@ -86,7 +88,7 @@ export default function CartPage() {
                     </div>
                 </div>
                 <div className="bg-gray-100 p-4 rounded-lg">
-                    <h2>checkout</h2>
+                    <h2>Checkout</h2>
                     <form>
                         <Address addressProps={address} setAddressProps={handleAddressChange}/>
                         <button type="submit" className="btn-register">Pay ${total}</button>
@@ -96,4 +98,3 @@ export default function CartPage() {
         </section>
     );
 }
-

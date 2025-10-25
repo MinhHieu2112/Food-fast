@@ -44,7 +44,7 @@ export default function EditableImage({value, onUpload }) {
     <div className="p-2 rounded-lg relative w-[150px]">
       <Image
         className="rounded-lg w-full h-auto mb-3 object-cover"
-        src={imageUrl || "/default-avatar.png"}
+        src={imageUrl || "/no-image.jpg"}
         width={200}
         height={200}
         alt="avatar"

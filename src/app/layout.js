@@ -1,12 +1,17 @@
-import { Roboto } from "next/font/google";
+//import { Roboto } from "next/font/google";
 import Header from "@/components/layout/header"
 import "./globals.css";
 import AppProvider from "@/components/AppContext"
 import {Toaster} from "react-hot-toast"
+import { Poppins } from "next/font/google"
 
-const roboto = Roboto({
-  weight: ['400', '500', '700'],
-  subsets: ['latin'],
+// const roboto = Roboto({
+//   weight: ['400', '500', '700'],
+//   subsets: ['latin'],
+// })
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
 })
 
 export const metadata = {
@@ -17,7 +22,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={roboto.className}>
+      <body className={poppins.className}>
         <main className="max-w-4xl mx-auto p-4">
           <AppProvider>
             <Toaster />
