@@ -1,3 +1,5 @@
+//File này hiển thị mô tả sản phẩm khi click vào sản phẩm
+
 import {CartContext} from "@/components/AppContext"
 import {useContext, useState} from "react"
 import MenuItemTile from "@/components/menu/menuItemTile"
@@ -10,6 +12,7 @@ export default function MenuItem(menuItem) {
     const [showPopup, setShowPopup] = useState(false);
     const [selectedSize, setSelectedSize] = useState(null);
     const [selectedExtras, setSelectedExtras] = useState([]);
+
     function handleAddToCartButtonClick() {
         const hasOption = sizes.length > 0 || extraIngredientPrices.length > 0;
             if (hasOption && !showPopup) {
@@ -98,7 +101,8 @@ export default function MenuItem(menuItem) {
                     </div>
                 </div>
             )}
-            <MenuItemTile onAddToCart={handleAddToCartButtonClick} {...menuItem}/>
+            {/*Hiển thị sản phẩm*/}
+                <MenuItemTile onAddToCart={handleAddToCartButtonClick} {...menuItem}/>
         </>
     );
 }

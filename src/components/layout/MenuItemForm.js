@@ -1,3 +1,4 @@
+//Form thông tin sản phẩm nhằm tái sử dụng
 import { useState, useEffect} from "react";
 import EditableImage from "@/components/layout/EditableImage";
 import MenuItemPriceProps from "./menuItemPriceProps";

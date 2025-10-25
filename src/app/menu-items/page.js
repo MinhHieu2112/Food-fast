@@ -1,3 +1,4 @@
+//Trang menu sản phẩm của admin
 'use client';
 import UserTabs from "@/components/layout/tabs"
 import UseProfile from "@/components/UseProfile"

@@ -1,3 +1,5 @@
+//Trang menu
+
 'use client';
 import {useState, useEffect} from "react"
 import SectionHeaders from "@/components/layout/sectionHeader"

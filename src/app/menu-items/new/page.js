@@ -1,3 +1,4 @@
+//Thêm mới sản phẩm
 'use client';
 import UserTabs from "@/components/layout/tabs"
 import UseProfile from "@/components/UseProfile"

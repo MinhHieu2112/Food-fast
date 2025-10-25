@@ -7,6 +7,7 @@ import Trash from "@/components/icons/trash"
 import Address from "@/components/layout/Address"
 import useProfile from "@/components/UseProfile"
 
+
 export default function CartPage() {
     const {cartProducts, removeCartProduct} = useContext(CartContext);
     const [address, setAddress] = useState({});
@@ -26,15 +27,30 @@ export default function CartPage() {
         }
     }, [profileData]);
         console.log("Data:",profileData)
-    let total = 0;
+    let subtotal = 0;
     for (const p of cartProducts) {
-        total += cartProductPrice(p);
+        subtotal += cartProductPrice(p);
     }
     function handleAddressChange(propName, value) {
         setAddress(prevAddress => {
             return {...prevAddress, [propName]:value};
         });
     }
+    async function proceedToCheckout(ev) {
+        ev.preventDefault();
+        // address and shopping cart products
+        const response = await fetch('/api/checkout', {
+            method: 'POST',
+            headers: {'Content-Type' : 'application/json'},
+            body: JSON.stringify({
+                address,
+                cartProducts,
+            }),
+        });
+        const link = await response.json();
+        window.location = link;
+    }
+    console.log({cartProducts})
     return(
         <section className="mt-8">
             <div className="text-center">
@@ -82,16 +98,25 @@ export default function CartPage() {
                         </div>
                     </div>
                 ))}
-                    <div className="py-4 text-right pr-16">
-                        <span className="text-gray-500">Subtotal:&nbsp;</span>
-                        <span className="text-lg font-semibold">${total}</span>
+                    <div className="py-2 pr-16 flex justify-end items-center">
+                        <div className="text-gray-500">
+                            Subtotal:<br />
+                            Delivery:<br />
+                            Total:
+                        </div>
+                        <div className="font-semibold pl-2 text-right">
+                            ${subtotal}<br />
+                            $5 <br />
+                            ${subtotal + 5}
+                        </div>
                     </div>
+                    
                 </div>
                 <div className="bg-gray-100 p-4 rounded-lg">
-                    <h2>Checkout</h2>
-                    <form>
+                    <h2>Delivery</h2>
+                    <form onSubmit={proceedToCheckout}>
                         <Address addressProps={address} setAddressProps={handleAddressChange}/>
-                        <button type="submit" className="btn-register">Pay ${total}</button>
+                        <button type="submit" className="btn-register">Pay ${subtotal}</button>
                     </form>
                 </div>
             </div>
