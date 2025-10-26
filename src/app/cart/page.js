@@ -6,13 +6,19 @@ import Image from "next/image";
 import Trash from "@/components/icons/trash"
 import Address from "@/components/layout/Address"
 import useProfile from "@/components/UseProfile"
-
+import toast from "react-hot-toast"
 
 export default function CartPage() {
     const {cartProducts, removeCartProduct} = useContext(CartContext);
     const [address, setAddress] = useState({});
     const {data: profileData} = useProfile();
-
+    useEffect(() => {
+        if (typeof window !== 'underfined') {
+            if (window.location.href.includes('canceled=1')){
+                toast.error('payment failed');
+                }
+            }
+    }, [])
     useEffect(() => {
         if (profileData?.city) {
             const {phone, address, city, postal, country} = profileData;
@@ -26,7 +32,7 @@ export default function CartPage() {
             setAddress(addressFromProfile);
         }
     }, [profileData]);
-        console.log("Data:",profileData)
+        
     let subtotal = 0;
     for (const p of cartProducts) {
         subtotal += cartProductPrice(p);
@@ -39,18 +45,41 @@ export default function CartPage() {
     async function proceedToCheckout(ev) {
         ev.preventDefault();
         // address and shopping cart products
-        const response = await fetch('/api/checkout', {
+
+        const promise = new Promise((resolve, reject) => {
+            fetch('/api/checkout', {
             method: 'POST',
             headers: {'Content-Type' : 'application/json'},
             body: JSON.stringify({
                 address,
                 cartProducts,
-            }),
+                }),
+            }).then(async (response) => {
+                if(response.ok) {
+                    resolve();
+                    window.location = await response.json();
+                } else {
+                    reject();
+                }
+            });
         });
-        const link = await response.json();
-        window.location = link;
+
+        await toast.promise(promise, {
+            loading: 'Preparing your order...',
+            success: 'Redirecting to payment...',
+            error: 'Something went wrong...',
+        });
     }
-    console.log({cartProducts})
+    
+    if(cartProducts?.length === 0) {
+        return (
+            <section className="mt-8 text-center">
+                <SectionHeaders mainHeader="Cart" />
+                <p className="mt-4">Your shopping cart is empty</p>
+            </section>
+        );
+    }
+
     return(
         <section className="mt-8">
             <div className="text-center">
@@ -110,7 +139,6 @@ export default function CartPage() {
                             ${subtotal + 5}
                         </div>
                     </div>
-                    
                 </div>
                 <div className="bg-gray-100 p-4 rounded-lg">
                     <h2>Delivery</h2>

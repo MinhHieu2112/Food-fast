@@ -11,7 +11,6 @@
 import connectToDB from "@/libs/mongoConnect";
 import { MenuItem } from "@/models/Menu-items";
 
-
 export async function POST(req) {
   try {
     await await connectToDB();

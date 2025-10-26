@@ -56,20 +56,23 @@ export async function POST(req) {
         });
     }
 
-    const baseUrl = process.env.NEXTAUTH_URL.endsWith('/')
-    ? process.env.NEXTAUTH_URL.slice(0, -1)
-    : process.env.NEXTAUTH_URL;
+    // const baseUrl = process.env.NEXTAUTH_URL.endsWith('/')
+    // ? process.env.NEXTAUTH_URL.slice(0, -1)
+    // : process.env.NEXTAUTH_URL;
 
-    const successUrl = `${baseUrl}/cart?success=1`;
-    const cancelUrl = `${baseUrl}/cart?canceled=1`;
+    // const successUrl = `${baseUrl}/cart?success=1`;
+    // const cancelUrl = `${baseUrl}/cart?canceled=1`;
 
     const stripeSession = await stripe.checkout.sessions.create({
         line_items: stripeLineItems,
         mode: 'payment',
         customer_email: userEmail,
-        success_url: successUrl,
-        cancel_url: cancelUrl,
+        success_url: process.env.NEXTAUTH_URL + '/' + 'order/' + orderDoc._id.toString() + '?clear-cart=1',
+        cancel_url: process.env.NEXTAUTH_URL + '/' + 'cart?canceled=1',
         metadata: {orderId: orderDoc._id.toString()},
+        payment_intent_data: {
+            metadata: {orderId: orderDoc._id.toString()},
+        },
         shipping_options: [
             {
                 shipping_rate_data: {
@@ -80,5 +83,6 @@ export async function POST(req) {
             }
         ],
     });
+    console.log(stripeSession);
     return Response.json(stripeSession.url);
 }
