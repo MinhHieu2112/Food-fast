@@ -21,8 +21,9 @@ export default function CartPage() {
     }, [])
     useEffect(() => {
         if (profileData?.city) {
-            const {phone, address, city, postal, country} = profileData;
+            const {name ,phone, address, city, postal, country} = profileData;
             const addressFromProfile = {
+                name,
                 phone, 
                 streetAddress: address, 
                 city, 
@@ -143,8 +144,14 @@ export default function CartPage() {
                 <div className="bg-gray-100 p-4 rounded-lg">
                     <h2>Delivery</h2>
                     <form onSubmit={proceedToCheckout}>
+                        <div>
+                            <label>Name</label>
+                            <input type="text" 
+                                    value={address.name || ''} 
+                                    onChange={e => setAddress({...address, name: e.target.value})}/>
+                        </div>
                         <Address addressProps={address} setAddressProps={handleAddressChange}/>
-                        <button type="submit" className="btn-register">Pay ${subtotal}</button>
+                        <button type="submit" className="btn-register">Pay ${subtotal+5}</button>
                     </form>
                 </div>
             </div>
