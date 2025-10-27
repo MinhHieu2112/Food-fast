@@ -4,6 +4,8 @@ import {CartContext} from "@/components/AppContext";
 import {useContext, useState, useEffect} from "react";
 import { useParams } from 'next/navigation';
 import OrderForm from "@/components/layout/OrderForm"
+import MapComponent from "@/components/Map/MapComponent";
+import DeliveryTimer from "@/components/Map/DeliveryTimer"
 export default function OrderPage() {
     const {clearCart, cartProducts} = useContext(CartContext);
     const {id} = useParams();
@@ -15,7 +17,7 @@ export default function OrderPage() {
             }
         }
         if (id) {
-            fetch('/api/order?_id='+id)
+            fetch('/api/orders?_id='+id)
                 .then(res => res.json())
                 .then(orderData => {
                     setOrder(orderData)
@@ -26,18 +28,21 @@ export default function OrderPage() {
     return (
         <section className="max-w-2xl mx-auto mt-8">
             <div className="text-center">
-                <SectionHeaders mainHeader="Your order"/>
-                <div>
+                <SectionHeaders mainHeader="Order detail"/>
+                {/* <div>
                     <p>Thanks for your order.</p>
                     <p>We will call you when your order will be on the way</p>
-                </div>
+                </div> */}
             </div>
             {order && (
-                <div className="grid grid-cols-2 gap-16 mt-8">
+                <div className="grid grid-cols-[1.3fr_1.7fr] gap-16 mt-8">
+                    {/* Bên trái */}
                     <OrderForm order={order}/>
                     <div>
                         <div className="bg-gray-100 p-4 rounded-lg">
-                            <pre>{JSON.stringify(order, null, 2)}</pre>
+                            {/* Bên phải */}
+                            <DeliveryTimer initialMinutes={1} orderId={order._id.slice(-5)}/>
+                            <MapComponent address={order.streetAddress} city={order.city} />
                         </div>
                     </div>
                 </div>

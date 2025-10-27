@@ -15,6 +15,8 @@ export default function OrderForm({order}) {
         <div className="bg-gray-100 p-4 rounded-lg">
                         <h2 className="text-center font-semibold mb-2">Delivery Information</h2>
                         <ul className="text-sm mt-2">
+                            <li>Created at: {new Date(order.createdAt).toLocaleString('vi-VN')}</li>
+                            <li>Order ID: {order._id.slice(-5)}</li>
                             <li>Name: {order.name}</li>
                             <li>Address: {order.streetAddress}</li>
                             <li>City: {order.city}</li>

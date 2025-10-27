@@ -2,7 +2,7 @@ import connectToDB from "@/libs/mongoConnect";
 import {getServerSession} from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import {User} from "@/models/User"
-import {Order} from "@/models/Order"
+import { Order } from "@/models/Order";
 
 export async function GET(req) {
     await connectToDB();

@@ -1,6 +1,7 @@
 //import { Roboto } from "next/font/google";
 import Header from "@/components/layout/header"
 import "./globals.css";
+import 'leaflet/dist/leaflet.css';
 import AppProvider from "@/components/AppContext"
 import {Toaster} from "react-hot-toast"
 import { Poppins } from "next/font/google"

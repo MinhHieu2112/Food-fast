@@ -2,7 +2,7 @@
 import Link from "next/link"
 import {usePathname} from "next/navigation"
 
-
+//UserTabs là thanh profile, categories, menu-items, orders, users
 export default function UserTabs({isAdmin}) {
     const path = usePathname();
     return (

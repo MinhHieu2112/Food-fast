@@ -7,7 +7,7 @@ export default function useUserName() {
 
   useEffect(() => {
     if (status === 'authenticated') {
-      // 👉 Fetch tên mới nhất từ DB nếu cần
+      // Fetch tên mới nhất từ DB nếu cần
       fetch('/api/profile')
         .then(res => res.json())
         .then(data => {
