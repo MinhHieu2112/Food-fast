@@ -19,7 +19,7 @@ export default function Address({addressProps, setAddressProp}) {
                 </div>
                 <div>
                     <label>City</label>
-                    <input type="text" placeholder="City" value={city || ''} onChange={(ev) => setCity('city',ev.target.value)}/>
+                    <input type="text" placeholder="City" value={city || ''} onChange={(ev) => setAddressProp('city',ev.target.value)}/>
                 </div>
             </div>
             <label>Country</label>

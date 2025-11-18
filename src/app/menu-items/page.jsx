@@ -24,13 +24,13 @@ export default function MenuItemsPage() {
         return 'Loading user info';
     }
 
-    if (!data.isAdmin) {
+    if (!data || !data.isAdmin) {
         return 'Not an admin';
     }
 
+
     return (
         <section className="mt-8 max-w-2xl mx-auto">
-            <UserTabs isAdmin={true} />
             <div className="mt-8">
                 <Link 
                     className="button flex"

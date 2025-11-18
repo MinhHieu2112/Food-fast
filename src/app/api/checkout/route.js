@@ -43,7 +43,7 @@ export async function POST(req) {
         }
         
         const productName = cartProduct.name;
-        console.log("Product:", productName, "Price:", productPrice);
+
         stripeLineItems.push({
             quantity: 1,
             price_data: {
@@ -83,6 +83,6 @@ export async function POST(req) {
             }
         ],
     });
-    console.log(stripeSession);
+
     return Response.json(stripeSession.url);
 }

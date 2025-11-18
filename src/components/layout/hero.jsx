@@ -1,36 +1,99 @@
+// import Image from "next/image";
+// import Right from "@/components/icons/right";
+// export default function Hero() {
+//     return (
+//         <section className="hero mt-4">
+//           <div className="py-12">
+//             <h1 className="text-4xl font-semibold">
+//                 Everything <br />
+//                 is better <br />
+//                 with a&nbsp; 
+//                 <span className="text-primary">
+//                     pizza
+//                 </span>
+//             </h1>
+//             <p className="my-6 text-gray-500 text-sm">
+//                 Pizza is the missing piece that makes every
+//                 day complete, a simple yet delicious joy in
+//                 life
+//             </p>
+//             <div className="flex gap-4 text-sm">
+//                 <button className="justify-center bg-primary uppercase flex items-center gap-2 text-white px-4 py-2 rounded-full">Order now
+//                     <Right />
+//                 </button>
+//                 <button className="flex items-center border-0 gap-2 py-2 text-gray-600 font-semibold">Learn more
+//                     <Right />
+//                 </button>
+//             </div>
+//           </div>
+//             <div className="relative">
+//                 <Image src={'/seafood-pizza.jpg'} layout={'fill'} 
+//                 objectFit={'contain'} alt={'pizza'}
+//                 />
+//             </div>
+//         </section>
+//     );
+// }
+
+'use client';
 import Image from "next/image";
 import Right from "@/components/icons/right";
+import UseProfile from "@/components/UseProfile";
+
 export default function Hero() {
-    return (
-        <section className="hero mt-4">
-          <div className="py-12">
+  const { loading, data: profile } = UseProfile();
+  const isAdmin = profile?.isAdmin;
+
+  return (
+    <section className="hero mt-4">
+      <div className="py-12">
+        {isAdmin ? (
+          <>
             <h1 className="text-4xl font-semibold">
-                Everything <br />
-                is better <br />
-                with a&nbsp; 
-                <span className="text-primary">
-                    pizza
-                </span>
+              Welcome, Admin <br />
+              Manage your <span className="text-primary">dashboard</span>
             </h1>
             <p className="my-6 text-gray-500 text-sm">
-                Pizza is the missing piece that makes every
-                day complete, a simple yet delicious joy in
-                life
+              Here you can manage orders, menus, and categories.
             </p>
             <div className="flex gap-4 text-sm">
-                <button className="justify-center bg-primary uppercase flex items-center gap-2 text-white px-4 py-2 rounded-full">Order now
-                    <Right />
-                </button>
-                <button className="flex items-center border-0 gap-2 py-2 text-gray-600 font-semibold">Learn more
-                    <Right />
-                </button>
+              <button className="justify-center bg-primary uppercase flex items-center gap-2 text-white px-4 py-2 rounded-full">
+                Go to Dashboard <Right />
+              </button>
             </div>
-          </div>
-            <div className="relative">
-                <Image src={'/seafood-pizza.jpg'} layout={'fill'} 
-                objectFit={'contain'} alt={'pizza'}
-                />
+          </>
+        ) : (
+          <>
+            <h1 className="text-4xl font-semibold">
+              Everything <br />
+              is better <br />
+              with a&nbsp; 
+              <span className="text-primary">pizza</span>
+            </h1>
+            <p className="my-6 text-gray-500 text-sm">
+              Pizza is the missing piece that makes every
+              day complete, a simple yet delicious joy in
+              life
+            </p>
+            <div className="flex gap-4 text-sm">
+              <button className="justify-center bg-primary uppercase flex items-center gap-2 text-white px-4 py-2 rounded-full">
+                Order now <Right />
+              </button>
+              <button className="flex items-center border-0 gap-2 py-2 text-gray-600 font-semibold">
+                Learn more <Right />
+              </button>
             </div>
-        </section>
-    );
+          </>
+        )}
+      </div>
+      <div className="relative w-full h-96">
+        <Image 
+          src={isAdmin ? '/admin-hero.jpg' : '/seafood-pizza.jpg'} 
+          layout="fill" 
+          objectFit="contain" 
+          alt="hero"
+        />
+      </div>
+    </section>
+  );
 }

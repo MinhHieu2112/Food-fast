@@ -12,8 +12,9 @@ export default function CartPage() {
     const {cartProducts, removeCartProduct} = useContext(CartContext);
     const [address, setAddress] = useState({});
     const {data: profileData} = useProfile();
+
     useEffect(() => {
-        if (typeof window !== 'underfined') {
+        if (typeof window !== 'undefined') {
             if (window.location.href.includes('canceled=1')){
                 toast.error('payment failed');
                 }
@@ -33,7 +34,7 @@ export default function CartPage() {
             setAddress(addressFromProfile);
         }
     }, [profileData]);
-        
+    
     let subtotal = 0;
     for (const p of cartProducts) {
         subtotal += cartProductPrice(p);

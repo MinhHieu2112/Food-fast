@@ -6,7 +6,8 @@ export default function AddToCartButton ({hasSizesOrExtras, onClick, basePrice})
             type="button"
             onClick={onClick}
             className="mt-4 bg-primary text-white rounded-full px-8 py-2">
-                {hasSizesOrExtras ? (
+                {/* Xác định xem sản phẩm có nhiều lựa chọn */}
+                {hasSizesOrExtras ? ( 
                     <span>Add to cart ${basePrice}</span>
                 ) : (
                     <span>Add to cart ${basePrice}</span>

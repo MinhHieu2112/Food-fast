@@ -3,6 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link"
 import { signIn } from "next-auth/react"; 
+import toast from "react-hot-toast"
 
 export default function RegisterPage() {
     const [email, setEmail] = useState('');
@@ -22,8 +23,10 @@ export default function RegisterPage() {
         });
         if(response.ok){
             setUserCreated(true);
+            toast.success('User created! You can now login.')
         } else {
             setError(true);
+            toast.error('An error occurred. Please try again later.')
         }
         setCreatingUser(false); 
     }
@@ -36,12 +39,6 @@ export default function RegisterPage() {
             <div className="my-4 text-center">
                 User created. Now you can 
                 <Link className="underline" href={'/login'}> Login &raquo;</Link>
-            </div>
-        )}
-        {error && (
-            <div className="my-4 text-center">
-                An error has occurred.<br />
-                Please try again later
             </div>
         )}
         <form className="block max-w-xs mx-auto" onSubmit={handleFormSubmit} >

@@ -15,7 +15,7 @@ export async function POST(req) {
   try {
     await await connectToDB();
     const data = await req.json();
-    // 🩹 Chặn lỗi ObjectId rỗng
+    // Chặn lỗi ObjectId rỗng
     if (!data.category || data.category === '') {
       delete data.category;
     }
@@ -28,10 +28,10 @@ export async function POST(req) {
       sizes: data.sizes,
       extraIngredientPrices: data.extraIngredientPrices,
     });
-    console.log("✅ Created menu item:", menuItem);
+    console.log(" Created menu item:", menuItem);
     return Response.json(menuItem);
   } catch (err) {
-    console.error("❌ Error creating menu item:", err);
+    console.error(" Error creating menu item:", err);
     return Response.json({ error: err.message }, { status: 500 });
   }
 }
@@ -44,7 +44,7 @@ export async function PUT(req) {
     sizes: data.sizes || [],
     extraIngredientPrices: data.extraIngredientPrices || [],
   });
-  console.log("✅ Updated menu item:", _id);
+  console.log("Updated menu item:", _id);
   return Response.json(true);
 }
 

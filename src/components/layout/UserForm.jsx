@@ -4,8 +4,7 @@ import {useEffect} from "react";
 import useProfile from "@/components/UseProfile"
 import Address from "@/components/layout/Address"
 
-export default function UserForm({user, onSave}) {
-    console.log(user);
+export default function UserForm({user, onSave, showAdmin = true}) {
     const [userName, setUserName] = useState('');
     //const [image, setImage] = useState('');
     const [phone, setPhone] = useState('');
@@ -80,7 +79,8 @@ export default function UserForm({user, onSave}) {
                 </div>
                 <Address addressProps={{phone, streetAddress, postalCode, city, country}}
                         setAddressProp={handleAddressChange}/>
-                    {loggedInUserData?.isAdmin && (
+                    {/* {loggedInUserData?.isAdmin && ( */}
+                    {showAdmin && (
                         <div>
                             <label htmlFor="adminCb" className="p-2 inline-flex items-center gap-2">
                                 <input id="adminCb" type="checkbox"
@@ -90,6 +90,7 @@ export default function UserForm({user, onSave}) {
                             </label>
                         </div>
                     )}
+                    {/* )} */}
                 <button className="bg-primary btn-register" type="submit">
                     Save
                 </button>

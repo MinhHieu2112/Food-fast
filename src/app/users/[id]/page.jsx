@@ -50,9 +50,8 @@ export default function EditUserPage() {
 
     return (
         <section className="mt-8 mx-auto max-w-2xl">
-            <UserTab isAdmin={true}/>
             <div className="mt-8">
-                <UserForm user={user} onSave={handleSaveButtonClick} />
+                <UserForm user={user} onSave={handleSaveButtonClick} showAdmin={true} />
             </div>
         </section>
     );

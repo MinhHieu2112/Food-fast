@@ -20,7 +20,7 @@ export async function GET(req) {
     if(userEmail) {
         const userInfo = await User.findOne({email: userEmail});
         if(userInfo) {
-            isAdmin = userInfo.admin;
+            isAdmin = userInfo.isAdmin;
         }
     }
 

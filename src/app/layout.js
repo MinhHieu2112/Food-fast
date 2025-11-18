@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import AppProvider from "@/components/AppContext"
 import {Toaster} from "react-hot-toast"
 import { Poppins } from "next/font/google"
-
+import Footer from "@/components/layout/Footer"
 // const roboto = Roboto({
 //   weight: ['400', '500', '700'],
 //   subsets: ['latin'],
@@ -29,9 +29,7 @@ export default function RootLayout({ children }) {
             <Toaster />
             <Header />
               {children}
-            <footer className="border-t p-8 text-center text-gray-500 mt-16">
-              &copy; 2025 All rights reserved
-            </footer>
+            <Footer />
           </AppProvider>
         </main>
       </body>

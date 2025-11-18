@@ -11,15 +11,15 @@ export const authOptions = {
   //adapter: MongoDBAdapter(clientPromise),
   providers:[
         GoogleProvider({
-        clientId: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET
+          clientId: process.env.GOOGLE_CLIENT_ID,
+          clientSecret: process.env.GOOGLE_CLIENT_SECRET
         }),
         CredentialsProvider({
-        name: 'Credentials',
-        id: 'credentials',
-        credentials: {
-        email: { label: "Email", type: "email", placeholder: "test@example.com" },
-        password: { label: "Password", type: "password" }
+          name: 'Credentials',
+          id: 'credentials',
+          credentials: {
+          email: { label: "Email", type: "email", placeholder: "test@example.com" },
+          password: { label: "Password", type: "password" }
         },
         async authorize(credentials, req) {
           const email = credentials?.email;
@@ -41,4 +41,3 @@ export const authOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST } 
-

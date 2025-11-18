@@ -90,7 +90,7 @@ export default function EditMenuItemPage() {
         return 'Loading user info ...'
     }
 
-    if(!data.isAdmin) {
+    if(!data || !data.isAdmin) {
         return 'Not an admin';
     }
 

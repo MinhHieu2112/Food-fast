@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-export default function DeliveryTimer({ orderId, initialMinutes = 20 }) {
+export default function DeliveryTimer({ orderId, initialMinutes }) {
     const STORAGE_KEY = `delivery_timer_${orderId}`;
     const DELIVERED_KEY = `delivery_status_${orderId}`; // Key lưu trạng thái delivered
   
@@ -58,7 +58,7 @@ export default function DeliveryTimer({ orderId, initialMinutes = 20 }) {
   // Nếu đã delivered
   if (isDelivered) {
     return (
-      <div className="text-center text-lg font-semibold text-green-600">
+      <div>
         Delivered
       </div>
     );
@@ -69,8 +69,8 @@ export default function DeliveryTimer({ orderId, initialMinutes = 20 }) {
   const seconds = timeLeft % 60;
 
   return (
-    <div className="text-center text-lg font-semibold text-red-500">
-      ⏱ Delivery time: {minutes}:{seconds.toString().padStart(2, '0')}
+    <div>
+      {minutes}:{seconds.toString().padStart(2, '0')}
     </div>
   );
 }
