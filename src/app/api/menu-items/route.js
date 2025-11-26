@@ -13,7 +13,7 @@ import { MenuItem } from "@/models/Menu-items";
 
 export async function POST(req) {
   try {
-    await await connectToDB();
+    await connectToDB();
     const data = await req.json();
     // Chặn lỗi ObjectId rỗng
     if (!data.category || data.category === '') {
@@ -44,7 +44,6 @@ export async function PUT(req) {
     sizes: data.sizes || [],
     extraIngredientPrices: data.extraIngredientPrices || [],
   });
-  console.log("Updated menu item:", _id);
   return Response.json(true);
 }
 

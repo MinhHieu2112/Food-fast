@@ -1,7 +1,6 @@
 'use client';
 import SectionHeaders from "@/components/layout/sectionHeader"
 import { useRouter } from "next/navigation";
-import UserTabs from "@/components/layout/tabs"
 import { useState, useEffect } from "react";
 import UseProfile from "@/components/UseProfile"
 import Link from "next/link"
@@ -53,7 +52,6 @@ export default function OrderPage() {
                     <div>Payment</div>
                     <div>Status</div>
                     <div>Details</div>
-
                 </div>
                 {orders?.length > 0 && orders.map(order => (
                     <div 

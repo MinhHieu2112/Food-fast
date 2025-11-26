@@ -7,11 +7,11 @@
 //     return Response.json(users);
 // }
 
-import mongoose from "mongoose";
+import connectToDB from "@/libs/mongoConnect"
 import { User } from "@/models/User";
 
 export async function GET(req) {
-  mongoose.connect(`${process.env.MONGO_URL}/food-fast`);
+  await connectToDB();
 
   const { searchParams } = new URL(req.url);
   const _id = searchParams.get('_id');

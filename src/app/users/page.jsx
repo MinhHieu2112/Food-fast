@@ -1,5 +1,4 @@
 'use client';
-import UserTab from "@/components/layout/tabs";
 import useProfile from "@/components/UseProfile"
 import {useEffect, useState} from "react"
 import Link from "next/link"

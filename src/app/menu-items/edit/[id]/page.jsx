@@ -1,7 +1,6 @@
 // Sửa sản phẩm
 'use client';
 import { redirect } from 'next/navigation';
-import UserTabs from "@/components/layout/tabs"
 import UseProfile from "@/components/UseProfile"
 import MenuItemForm from "@/components/layout/MenuItemForm"
 import {useState, useEffect} from "react"
@@ -96,7 +95,6 @@ export default function EditMenuItemPage() {
 
     return (
         <section className="mt-8 max-w-2xl mx-auto">
-            <UserTabs isAdmin={true} />
             <div className="max-w-2xl mx-auto mt-8">
                 <Link href={'/menu-items'} className="button">
                     <Left />

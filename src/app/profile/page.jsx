@@ -3,7 +3,6 @@ import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast"
 import '../../app/globals.css';
-import UserTabs from "@/components/layout/tabs"
 import UserForm from "@/components/layout/UserForm"
 
 export default function ProfilePage() {

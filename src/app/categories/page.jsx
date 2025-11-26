@@ -1,5 +1,4 @@
 "use client";
-import UserTabs from "@/components/layout/tabs";
 import {useEffect, useState} from "react";
 import UseProfile from "@/components/UseProfile"
 import toast from "react-hot-toast"

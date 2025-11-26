@@ -40,8 +40,7 @@ export async function PUT(req) {
 
   const data = await req.json();
   const {_id, name, ...otherUserInfo} = data;
-  console.log('Data nhận được:', data); // DEBUG
-  console.log('otherUserInfo:', otherUserInfo); // DEBUG
+
 
   let filter = {};
   if (_id) {

@@ -1,6 +1,5 @@
 //Thêm mới sản phẩm
 'use client';
-import UserTabs from "@/components/layout/tabs"
 import UseProfile from "@/components/UseProfile"
 import MenuItemForm from "@/components/layout/MenuItemForm"
 import {useState, useEffect} from "react"
@@ -52,7 +51,6 @@ export default function NewMenuItemPage() {
 
     return (
         <section className="mt-8">
-            <UserTabs isAdmin={true} />
             <div className="mt-8 max-w-2xl mx-auto">
                 <Link href={'/menu-items'} className="button">
                     <Left />

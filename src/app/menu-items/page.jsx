@@ -1,6 +1,5 @@
 //Trang menu sản phẩm của admin
 'use client';
-import UserTabs from "@/components/layout/tabs"
 import UseProfile from "@/components/UseProfile"
 import Link from "next/link"
 import Right from "@/components/icons/right"
