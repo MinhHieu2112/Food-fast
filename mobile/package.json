@@ -1,0 +1,76 @@
+{
+<<<<<<< HEAD
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build --turbopack",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@ant-design/nextjs-registry": "1.1.0",
+    "@auth/mongodb-adapter": "^3.10.0",
+    "@next/font": "^14.2.15",
+    "antd": "5.27.4",
+    "axios": "^1.12.2",
+    "bcrypt": "^6.0.0",
+    "cloudinary": "^2.7.0",
+    "leaflet": "^1.9.4",
+    "micro": "^10.0.1",
+    "mongodb": "^6.20.0",
+    "mongoose": "^8.19.0",
+    "mssql": "^12.0.0",
+    "next": "15.5.4",
+    "next-auth": "^4.24.11",
+    "next-cloudinary": "^6.16.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-hot-toast": "^2.6.0",
+    "react-leaflet": "^5.0.0",
+    "stripe": "^19.1.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "3.3.1",
+    "@tailwindcss/postcss": "^4.1.14",
+    "@types/bcrypt": "^6.0.0",
+    "@types/node": "24.6.2",
+    "@types/react": "19.2.0",
+    "@types/react-dom": "19.2.0",
+    "autoprefixer": "^10.4.21",
+    "eslint": "9.36.0",
+    "eslint-config-next": "15.5.4",
+    "postcss": "8.5.6",
+    "tailwindcss": "4.1.14",
+    "typescript": "5.9.3"
+=======
+  "name": "mobile",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./index.js",
+  "scripts": {
+    "dev:mobile": "node ../../scripts/dev-mobile.js",
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "~6.1.2",
+    "expo": "~54.0.25",
+    "expo-status-bar": "~3.0.8",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-native": "0.81.5",
+    "react-native-web": "0.21.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.7",
+    "@expo/ngrok": "^4.1.0",
+    "@types/react": "~19.1.10",
+    "babel-preset-expo": "~54.0.0",
+    "typescript": "~5.9.2"
+>>>>>>> b1370e03 (Initial commit)
+  }
+}
