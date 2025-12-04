@@ -6,7 +6,6 @@ import UseProfile from "@/components/UseProfile"
 import Link from "next/link"
 import DeliveryTimer from "@/components/Map/DeliveryTimer"
 
-
 export default function OrderPage() {
     const [orders, setOrders] = useState([]);
     const [loadingOrders, setLoadingOrders] = useState(true);
@@ -29,7 +28,6 @@ export default function OrderPage() {
             })
         }
     }, [profile])
-
 
     if (orders.length === 0){
         return (

@@ -13,15 +13,16 @@ export default function Header() {
     const { userName, status } = useUserName();
     const {cartProducts} = useContext(CartContext);
     const { loading, data: profile } = UseProfile();
-    const isAdmin = profile?.isAdmin;
+    const role = profile?.role;
+    const isAdmin = role === 'admin';
+    const isManager = role === 'manager';
+
     return (
     <header className="flex items-center justify-between">
       <nav className="flex items-center gap-8 text-gray-500 font-semibold">
         <Link className="text-primary font-semibold text-2xl" href={'/'}>ST PIZZA</Link>
-        {isAdmin ? (
-            <>
-              <UserTab isAdmin={true}/>
-            </>
+        {(isAdmin || isManager) ? (
+          <UserTab role={role}/>   // truyền role
           ) : (
             <>
               <Link href={'/'}>Home</Link>
@@ -34,7 +35,7 @@ export default function Header() {
       <nav className="flex items-center gap-8 text-gray-500 font-semibold">
         {status === 'authenticated' && (
           <>
-          {!isAdmin && (
+          {role === 'customer' && (
             <>
               <Link href={'/cart'} className="relative"> 
               <Cart/> 

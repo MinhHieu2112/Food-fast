@@ -4,18 +4,19 @@ import {useEffect, useState, useRef} from "react"
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Link from "next/link"
+import Right from "@/components/icons/right"
 
-export default function DronesPage() {
+export default function StorePage() {
 
     const {loading, data} = useProfile();
-    const [drones, setDrone] = useState([]);
+    const [stores, setStores] = useState([]);
     const router = useRouter();
     const toastId = useRef(null);
 
     useEffect(() => {
-        fetch('/api/drone').then(response => {
-            response.json().then(drones => {
-                setDrone(drones);
+        fetch('/api/store').then(response => {
+            response.json().then(stores => {
+                setStores(stores);
                 });
             });
     }, []);
@@ -23,7 +24,7 @@ export default function DronesPage() {
     // Show loading toast only once
     useEffect(() => {
     if (loading && !toastId.current) {
-        toastId.current = toast.loading("Loading drones info...");
+        toastId.current = toast.loading("Loading store info...");
     }
     if (!loading && toastId.current) {
         toast.dismiss(toastId.current);
@@ -51,42 +52,46 @@ export default function DronesPage() {
     return (
     <section className="max-w-2xl mx-auto mt-8">
         <div className="mt-8 text-sm">
-
+            <Link 
+                className="button flex mb-8"
+                href={'/store/new'}>
+                <span>Create new store</span>
+                <Right />
+            </Link>
             {/* Header */}
             <div className="grid grid-cols-4 font-semibold text-gray-700 border-b pb-3 mb-3 text-center">
                 <div>Name</div>
+                <div>Address</div>
                 <div>Status</div>
-                <div>Battery</div>
                 <div></div> {/* Cột nút View */}
             </div>
 
             {/* Rows */}
-            {drones?.length > 0 && drones.map(drone => (
+            {stores?.length > 0 && stores.map(store => (
                 <div
-                    key={drone._id}
+                    key={store._id}
                     className="grid grid-cols-4 bg-gray-100 rounded-lg mb-2 p-2 px-4 items-center text-center"
                 >
 
-                    {/* Drone Name */}
+                    {/* Store Name */}
                     <div className="text-gray-700">
-                        {drone.name || <span className="italic">No name</span>}
+                        {store.name || <span className="italic">No name</span>}
                     </div>
 
                     {/* Status */}
                     <div className="text-gray-500">
-                        {drone.status}
+                        {store.address.street}, {store.address.district}, {store.address.city}
                     </div>
 
                     {/* Battery */}
                     <div className="text-gray-500">
-                        {drone.battery}
+                        {store.status}
                     </div>
-
                     {/* View Button */}
                     <div>
                         <Link
                             className="btn-register bg-white text-sm hover:bg-gray-200 px-3 py-1 rounded-lg"
-                            href={'/drones/' + drone._id}
+                            href={`/store/edit/${store._id}`}
                         >
                             View
                         </Link>

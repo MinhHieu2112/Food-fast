@@ -8,7 +8,7 @@ import UserForm from "@/components/layout/UserForm"
 export default function ProfilePage() {
     const { data: session, status, update } = useSession();
     const [user, setUser] = useState(null);
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [role, setRole] = useState(false);
     const [profileFetched, setProfileFetched] = useState(false);
     //const {status} = session;
     
@@ -18,7 +18,7 @@ export default function ProfilePage() {
             fetch('/api/profile').then(response => {
                 response.json().then(data => {
                     setUser(data);
-                    setIsAdmin(data.isAdmin);
+                    setRole(data.role === "admin" || data.role === "manager");
                     setProfileFetched(true);
                 })
             })

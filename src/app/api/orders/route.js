@@ -9,7 +9,7 @@ export async function GET(req) {
 
     const session = await getServerSession(authOptions);
     const userEmail = session?.user?.email;
-    let isAdmin = false;
+    let role = false;
 
     const url = new URL(req.url); 
     const _id = url.searchParams.get('_id');
@@ -20,11 +20,11 @@ export async function GET(req) {
     if(userEmail) {
         const userInfo = await User.findOne({email: userEmail});
         if(userInfo) {
-            isAdmin = userInfo.isAdmin;
+            role = userInfo.role;
         }
     }
 
-    if(isAdmin) {
+    if(role === 'admin' || role === 'manager') {
         return Response.json(await Order.find());
     }
 

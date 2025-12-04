@@ -1,7 +1,7 @@
 'use client';
 import useProfile from "@/components/UseProfile"
-import {useEffect, useState} from "react"
-import {useParams} from "next/navigation"
+import {useEffect, useState, useRef} from "react"
+import {useParams, useRouter} from "next/navigation"
 import toast from "react-hot-toast"
 import EditableImage from "@/components/layout/EditableImage"
 
@@ -10,6 +10,8 @@ export default function EditDronesPage() {
     const {id} = useParams();
     const [drone, setDrone] = useState([]);
     const [image, setImage] = useState('');
+    const router = useRouter();
+    const toastId = useRef(null);
 
     useEffect(() => {
         if (!id) return;
@@ -18,19 +20,33 @@ export default function EditDronesPage() {
         .then(drone => setDrone(drone))
     }, [id]);
 
-    if (loading) {
-        return 'Loading drone profile ...';
+    // Show loading toast only once
+    useEffect(() => {
+    if (loading && !toastId.current) {
+        toastId.current = toast.loading("Loading drone info...");
     }
-
-    if (!data) return 'No user data';
-
-    if (!data.isAdmin) {
-        return 'Not an admin';
+    if (!loading && toastId.current) {
+        toast.dismiss(toastId.current);
+        toastId.current = null;
     }
+    }, [loading]);
 
-    if (!drone) {
-        return 'Loading drone...';
+    // Allowed roles
+    const allowed = ["admin", "manager"];
+
+    // Handle unauthorized access
+    useEffect(() => {
+    if (!loading && data) {
+        if (!allowed.includes(data.role)) {
+        toast.error("You do not have access!");
+        router.push("/");
+        }
     }
+    }, [loading, data, router]);
+
+    // Avoid rendering until authorized
+    if (loading) return null;
+    if (!data || !allowed.includes(data.role)) return null;
 
     return (
         <div 

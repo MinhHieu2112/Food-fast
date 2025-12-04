@@ -1,12 +1,16 @@
-'use client';
+"use client";
 import useProfile from "@/components/UseProfile"
-import {useEffect, useState} from "react"
+import {useEffect, useRef,useState} from "react"
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import Link from "next/link"
 
 export default function UsersPage() {
 
     const {loading, data} = useProfile();
     const [users, setUsers] = useState([]);
+    const toastId = useRef(null);
+    const router = useRouter();
 
     useEffect(() => {
         fetch('/api/users').then(response => {
@@ -16,17 +20,33 @@ export default function UsersPage() {
             });
     }, []);
 
-    if (loading) {
-        return 'Loading user info';
+    // Show loading toast only once
+    useEffect(() => {
+    if (loading && !toastId.current) {
+        toastId.current = toast.loading("Loading user info...");
     }
-    if (!data) {
-        return 'Loading...'; // hoặc redirect / skeleton
+    if (!loading && toastId.current) {
+        toast.dismiss(toastId.current);
+        toastId.current = null;
     }
+    }, [loading]);
 
+    // Allowed roles
+    const allowed = ["admin", "manager"];
 
-    if (!data.isAdmin) {
-        return 'Not an admin';
+    // Handle unauthorized access
+    useEffect(() => {
+    if (!loading && data) {
+        if (!allowed.includes(data.role)) {
+        toast.error("You do not have access!");
+        router.push("/");
+        }
     }
+    }, [loading, data, router]);
+
+    // Avoid rendering until authorized
+    if (loading) return null;
+    if (!data || !allowed.includes(data.role)) return null;
 
     return (
         <section className="max-w-2xl mx-auto mt-8">

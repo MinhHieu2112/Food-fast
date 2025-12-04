@@ -12,7 +12,7 @@ export default function UserForm({user, onSave, showAdmin = true}) {
     const [postalCode, setPostalCode] = useState('');
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
-    const [admin, setAdmin] = useState(user?.admin || false);
+    const [role, setRole] = useState('customer');
     const {data: loggedInUserData} = useProfile();
 
     function handleAddressChange(propName, value) {
@@ -24,7 +24,6 @@ export default function UserForm({user, onSave, showAdmin = true}) {
     }
 
     useEffect(() => {
-        console.log("user data from API ===>", user);
         if (user) {
             setUserName(user.name || '');
             setPhone(user.phone || '');
@@ -32,7 +31,7 @@ export default function UserForm({user, onSave, showAdmin = true}) {
             setPostalCode(user.postal || '');
             setCity(user.city || '');
             setCountry(user.country || '');
-            setAdmin(String(user.isAdmin) === 'true');
+            setRole(user.role || 'customer');
         }
     }, [user]);
     if (!user) return null;
@@ -62,7 +61,7 @@ export default function UserForm({user, onSave, showAdmin = true}) {
                             postal: postalCode,
                             city,
                             country,
-                            isAdmin: admin,
+                            role,
                         })}>
                 <div>
                     <label>Full name</label>
@@ -79,15 +78,18 @@ export default function UserForm({user, onSave, showAdmin = true}) {
                 </div>
                 <Address addressProps={{phone, streetAddress, postalCode, city, country}}
                         setAddressProp={handleAddressChange}/>
-                    {/* {loggedInUserData?.isAdmin && ( */}
                     {showAdmin && (
                         <div>
-                            <label htmlFor="adminCb" className="p-2 inline-flex items-center gap-2">
-                                <input id="adminCb" type="checkbox"
-                                        checked={admin === true || admin === 'true'}
-                                        onChange={ev => setAdmin(ev.target.checked)} />    
-                                <span>Admin</span>
-                            </label>
+                            <label className="block mb-1">Role</label>
+                            <select
+                                value={role}
+                                onChange={(ev) => setRole(ev.target.value)}
+                                className="border p-2 rounded-lg"
+                            >
+                                <option value="customer">Customer</option>
+                                <option value="manager">Manager</option>
+                                <option value="admin">Admin</option>
+                            </select>
                         </div>
                     )}
                     {/* )} */}

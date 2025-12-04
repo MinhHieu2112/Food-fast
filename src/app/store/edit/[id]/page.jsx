@@ -2,7 +2,7 @@
 'use client';
 import { redirect } from 'next/navigation';
 import UseProfile from "@/components/UseProfile"
-import MenuItemForm from "@/components/layout/MenuItemForm"
+import StoreForm from "@/components/layout/StoreForm"
 import {useState, useEffect, useRef} from "react"
 import toast from "react-hot-toast"
 import Link from "next/link"
@@ -11,11 +11,11 @@ import { useParams, useRouter } from 'next/navigation';
 import DeleteButton from "@/components/DeleteButton"
 
 
-export default function EditMenuItemPage() {
+export default function EditStorePage() {
     const {id} = useParams();
     const {loading, data} = UseProfile();
     const [redirectToItems, setRedirectToItems] = useState(false);
-    const [menuItem, setMenuItem] = useState(null);
+    const [store, setStore] = useState(null);
     const router = useRouter();
 
     useEffect(() => {
@@ -23,15 +23,15 @@ export default function EditMenuItemPage() {
 
     async function fetchData() {
         try {
-            const res = await fetch('/api/menu-items');
-            const items = await res.json();
-            const item = items.find(i => i._id.toString() === id.toString());
-            console.log("item:", item)
-            if (!item) {
-                console.warn("Item not found for id:", id);
+            const res = await fetch('/api/store');
+            const stores = await res.json();
+            const store = stores.find(i => i._id.toString() === id.toString());
+
+            if (!store) {
+                console.warn("Not found for id:", id);
                 return;
             }
-            setMenuItem(item);
+            setStore(store);
         } catch (err) {
             console.error("Fetch error:", err);
         }
@@ -44,7 +44,7 @@ export default function EditMenuItemPage() {
         ev.preventDefault();
         data = {...data,_id: id };
         const savingPromise = new Promise(async(resolve, reject) => {
-            const response = await fetch('/api/menu-items', {
+            const response = await fetch('/api/store', {
             method: 'PUT',
             body: JSON.stringify(data),
             headers: {'Content-Type' : 'application/json' },
@@ -56,35 +56,46 @@ export default function EditMenuItemPage() {
         });
 
         await toast.promise(savingPromise, {
-            loading: 'Saving this tasty item',
+            loading: 'Saving this store',
             success: 'Saved',
             error: 'Error',
         });
-
         setRedirectToItems(true);
     }
     
     async function handleDeleteClick() {
-        const promise = new Promise(async (resolve, reject) => {
-            const res = await fetch('/api/menu-items?_id=' + id, {
-                method: 'DELETE',
-            });
-            if (res.ok) {
-                resolve();
-            } else {
-                reject();
-            }
+    const promise = new Promise(async (resolve, reject) => {
+        const res = await fetch('/api/store?_id=' + id, {
+            method: 'DELETE',
         });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            resolve();
+        } else {
+            // Trả lỗi thật vào toast
+            reject(data.error || "Unknown error");
+        }
+    });
+
         toast.promise(promise, {
             loading: 'Deleting...',
             success: 'Deleted',
-            error: 'Error, sorry...',
+            error: (err) => err, // hiện đúng message từ API
+        })
+        .then(() => {
+            // Chỉ redirect khi xóa thành công
+            setRedirectToItems(true);
+        })
+        .catch(() => {
+            // Không redirect khi lỗi
         });
-        setRedirectToItems(true);
     }
 
+
     if (redirectToItems) {
-        return redirect('/menu-items');
+        return redirect('/store');
     }
 
     const toastId = useRef(null);
@@ -92,7 +103,7 @@ export default function EditMenuItemPage() {
     // Show loading toast only once
     useEffect(() => {
     if (loading && !toastId.current) {
-        toastId.current = toast.loading("Loading menu info...");
+        toastId.current = toast.loading("Loading store info...");
     }
     if (!loading && toastId.current) {
         toast.dismiss(toastId.current);
@@ -120,17 +131,14 @@ export default function EditMenuItemPage() {
     return (
         <section className="mt-8 max-w-2xl mx-auto">
             <div className="max-w-2xl mx-auto mt-8">
-                <Link href={'/menu-items'} className="button">
+                <Link href={'/store'} className="button">
                     <Left />
-                    <span>Show all menu items</span>
+                    <span>Show all stores</span>
                 </Link>
             </div>
-            <MenuItemForm menuItem={menuItem} onSubmit={handleFormSubmit}/>
-            <div className="max-w-lg mx-auto mt-2">
-                <div className="max-w-xs ml-auto pl-9.5">
-                    <DeleteButton label="Delete this menu item" 
-                                onDelete={handleDeleteClick}/>
-                </div>
+            <StoreForm initialStore={store} onSubmit={handleFormSubmit}/>
+            <div className="max-w-2xl mx-auto mt-4">
+                <DeleteButton label="Delete this store" onDelete={handleDeleteClick}/>
             </div>
         </section>
     );

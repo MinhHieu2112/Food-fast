@@ -10,8 +10,12 @@ const UserSchema = new Schema({
     postal: {type: String},
     city: {type: String},
     country: {type: String},
-    isAdmin: {type: Boolean, default: false},
-
+    // Role enum
+    role: { 
+        type: String,
+        enum: ["customer", "manager", "admin"],
+        default: "customer"
+    }
 }, {timestamps: true});
 
 export const User = models?.User || model('User', UserSchema);

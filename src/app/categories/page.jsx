@@ -1,6 +1,7 @@
 "use client";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useRef} from "react";
 import UseProfile from "@/components/UseProfile"
+import {useRouter} from "next/navigation"
 import toast from "react-hot-toast"
 import DeleteButton from "@/components/DeleteButton"
 
@@ -9,7 +10,9 @@ export default function CategoriesPage() {
     const [categories, setCategories] = useState([]);
     const {loading:profileLoading, data:profileData} = UseProfile();
     const [editedCategory, setEditedCategory] = useState(null);
-    
+    const toastId = useRef(null);
+    const router = useRouter();
+
     useEffect(() => {
         fetchCategories();
     }, []);
@@ -69,12 +72,34 @@ export default function CategoriesPage() {
         fetchCategories();
     }
 
-    if (profileLoading) {
-        return 'Loading user info...'
+    // Show loading toast only once
+    useEffect(() => {
+    if (profileLoading && !toastId.current) {
+        toastId.current = toast.loading("Loading user info...");
     }
-    if (!profileData.isAdmin) {
-        return 'Not an admin';
+    if (!profileLoading && toastId.current) {
+        toast.dismiss(toastId.current);
+        toastId.current = null;
     }
+    }, [profileLoading]);
+
+    // Allowed roles
+    const allowed = ["admin"];
+
+    // Handle unauthorized access
+    useEffect(() => {
+    if (!profileLoading && profileData) {
+        if (!allowed.includes(profileData.role)) {
+        toast.error("You do not have access!");
+        router.push("/");
+        }
+    }
+    }, [profileLoading, profileData, router]);
+
+    // Avoid rendering until authorized
+    if (profileLoading) return null;
+    if (!profileData || !allowed.includes(profileData.role)) return null;
+
     return (
         <section className="mt-8 max-w-2xl mx-auto">
             <form className="mt-8" onSubmit={handleCategorySubmit}>

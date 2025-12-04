@@ -120,7 +120,7 @@ import UseProfile from "@/components/UseProfile";
 
 export default function Home() {
   const { loading, data: profile } = UseProfile();
-  const isAdmin = profile?.isAdmin;
+  const isCustomer = profile?.role === 'customer';
 
   return (
     <>
@@ -128,7 +128,7 @@ export default function Home() {
       <Hero/>
 
       {/* Nếu là Customer, hiển thị các phần bình thường */}
-      {!isAdmin && (
+      {isCustomer && (
         <>
           {/* Menu Section */}
           <HomeMenu />

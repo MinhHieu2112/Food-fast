@@ -3,7 +3,9 @@
 import UseProfile from "@/components/UseProfile"
 import Link from "next/link"
 import Right from "@/components/icons/right"
-import {useState, useEffect} from "react"
+import {useState, useEffect, useRef} from "react"
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast"
 import Image from "next/image"
 
 
@@ -11,6 +13,9 @@ export default function MenuItemsPage() {
 
     const [menuItems, setMenuItems] = useState([]);
     const {loading, data} = UseProfile();
+    const router = useRouter();
+    const toastId = useRef(null);
+
     useEffect(() => {
         fetch('/api/menu-items').then(res => {
             res.json().then(menuItems => {
@@ -19,14 +24,33 @@ export default function MenuItemsPage() {
         });
     }, []);
 
-    if (loading) {
-        return 'Loading user info';
+    // Show loading toast only once
+    useEffect(() => {
+    if (loading && !toastId.current) {
+        toastId.current = toast.loading("Loading menu info...");
     }
-
-    if (!data || !data.isAdmin) {
-        return 'Not an admin';
+    if (!loading && toastId.current) {
+        toast.dismiss(toastId.current);
+        toastId.current = null;
     }
+    }, [loading]);
 
+    // Allowed roles
+    const allowed = ["admin"];
+
+    // Handle unauthorized access
+    useEffect(() => {
+    if (!loading && data) {
+        if (!allowed.includes(data.role)) {
+        toast.error("You do not have access!");
+        router.push("/");
+        }
+    }
+    }, [loading, data, router]);
+
+    // Avoid rendering until authorized
+    if (loading) return null;
+    if (!data || !allowed.includes(data.role)) return null;
 
     return (
         <section className="mt-8 max-w-2xl mx-auto">

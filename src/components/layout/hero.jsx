@@ -39,27 +39,29 @@
 import Image from "next/image";
 import Right from "@/components/icons/right";
 import UseProfile from "@/components/UseProfile";
+import Link from "next/link";
 
 export default function Hero() {
   const { loading, data: profile } = UseProfile();
-  const isAdmin = profile?.isAdmin;
+  const role = profile?.role;
+  const isCustomer = role === 'customer';
 
   return (
     <section className="hero mt-4">
       <div className="py-12">
-        {isAdmin ? (
+        {!isCustomer ? (
           <>
             <h1 className="text-4xl font-semibold">
-              Welcome, Admin <br />
+              Welcome back!  <br />
               Manage your <span className="text-primary">dashboard</span>
             </h1>
             <p className="my-6 text-gray-500 text-sm">
               Here you can manage orders, menus, and categories.
             </p>
             <div className="flex gap-4 text-sm">
-              <button className="justify-center bg-primary uppercase flex items-center gap-2 text-white px-4 py-2 rounded-full">
+              <Link href="/dashboard" className="justify-center bg-primary uppercase flex items-center gap-2 text-white px-4 py-2 rounded-full">
                 Go to Dashboard <Right />
-              </button>
+              </Link>
             </div>
           </>
         ) : (
@@ -88,7 +90,7 @@ export default function Hero() {
       </div>
       <div className="relative w-full h-96">
         <Image 
-          src={isAdmin ? '/admin-hero.jpg' : '/seafood-pizza.jpg'} 
+          src={!isCustomer ? '/admin-hero.jpg' : '/seafood-pizza.jpg'} 
           layout="fill" 
           objectFit="contain" 
           alt="hero"
