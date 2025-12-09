@@ -43,4 +43,3 @@ export async function GET(req) {
         return Response.json({ error: err.message }, { status: 500 });
     }
 }
-

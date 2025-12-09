@@ -107,10 +107,10 @@ export default function StoreForm({initialStore, onSubmit}) {
                 </select>
             </div>
             {/* Add more fields for operating hours, delivery zones, coordinates as needed */}
-            <div>
+            {/* <div>
                 <label>Operating Hours - Day of Week (0-6)</label>
                 <input type="text" value={day} onChange={ev => setDay(ev.target.value)} />
-            </div>
+            </div> */}
             <div className="grid grid-cols-2 gap-2">
                 <div>
                     <label>Open Time (HH:MM)</label>
