@@ -9,17 +9,21 @@ const stripe = new Stripe(process.env.STRIPE_SK);
 
 export async function POST(req) {
     await connectToDB();
-    const {cartProducts, address} = await req.json();
+    const {cartProducts, address, store, note} = await req.json();
     const session = await getServerSession(authOptions);
     const userEmail = session?.user?.email;
-    
+
     const orderDoc = await Order.create({
         userEmail,
         ...address,
         cartProducts,
-        paid: false,
+        store,
+        note,
+        status: 'pending',
+        paymentMethod: "online",
+        paid: true,
     });
-
+    
     const stripeLineItems = [];
     for (const cartProduct of cartProducts) {
 

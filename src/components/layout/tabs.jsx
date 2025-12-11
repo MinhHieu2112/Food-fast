@@ -66,12 +66,6 @@ export default function UserTabs({role}) {
                                 >
                                     Orders
                             </Link>
-                            <Link 
-                                href={'/dashboard'}
-                                className={path === '/dashboard' ? 'active' : ''}
-                                >
-                                    Dashboard
-                            </Link>
                         </>
                     )}
             </div>

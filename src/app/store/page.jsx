@@ -59,47 +59,51 @@ export default function StorePage() {
                 <Right />
             </Link>
             {/* Header */}
-            <div className="grid grid-cols-4 font-semibold text-gray-700 border-b pb-3 mb-3 text-center">
-                <div>Name</div>
-                <div>Address</div>
-                <div>Status</div>
-                <div></div> {/* Cột nút View */}
-            </div>
+            <table className="w-full border-collapse text-center">
+                <thead>
+                    <tr>
+                        <th className="py-3 px-4">Name</th>
+                        <th className="py-3 px-4">Address</th>
+                        <th className="py-3 px-4">Status</th>
+                        <th className="py-3 px-4">Detail</th>
+                    </tr>
+                </thead>
 
-            {/* Rows */}
-            {stores?.length > 0 && stores.map(store => (
-                <div
-                    key={store._id}
-                    className="grid grid-cols-4 bg-gray-100 rounded-lg mb-2 p-2 px-4 items-center text-center"
-                >
-
-                    {/* Store Name */}
-                    <div className="text-gray-700">
-                        {store.name || <span className="italic">No name</span>}
-                    </div>
-
-                    {/* Status */}
-                    <div className="text-gray-500">
-                        {store.address.street}, {store.address.district}, {store.address.city}
-                    </div>
-
-                    {/* Battery */}
-                    <div className="text-gray-500">
-                        {store.status}
-                    </div>
-                    {/* View Button */}
-                    <div>
-                        <Link
-                            className="btn-register bg-white text-sm hover:bg-gray-200 px-3 py-1 rounded-lg"
-                            href={`/store/edit/${store._id}`}
+                <tbody>
+                    {/* Rows */}
+                    {stores?.length > 0 && stores.map(store => (
+                        <tr
+                            key={store._id}
+                            className="border-t hover:bg-gray-50 transition-colors"
                         >
-                            View
-                        </Link>
-                    </div>
 
-                </div>
-            ))}
+                            {/* Store Name */}
+                            <td className="py-3 px-4">
+                                {store.name || <span className="italic">No name</span>}
+                            </td>
 
+                            {/* Status */}
+                            <td className="py-3 px-4">
+                                {store.address.street}, {store.address.district}, {store.address.city}
+                            </td>
+
+                            {/* Battery */}
+                            <td className="py-3 px-4">
+                                {store.status}
+                            </td>
+                            {/* View Button */}
+                            <td className="py-3 px-4">
+                                <Link
+                                    className="btn-register bg-white text-sm hover:bg-gray-200 px-3 py-1 rounded-lg"
+                                    href={`/store/edit/${store._id}`}
+                                >
+                                    View
+                                </Link>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     </section>
 );

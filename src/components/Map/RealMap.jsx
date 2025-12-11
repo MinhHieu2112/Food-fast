@@ -1,113 +1,138 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
-import { useMap } from 'react-leaflet';
-import axios from "axios"; //định tuyến đường
+import { useEffect, useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
+import L from "leaflet";
+import axios from "axios";
 
-//Bước 1 — Cấu hình icon mặc định của Leaflet
-// Fix lỗi icon không hiện trong môi trường Next.js
+// Fix icon
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
-    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
   iconUrl:
-    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
   shadowUrl:
-    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
 
-// Khi customerPos thay đổi, map sẽ tự zoom 
-// và canh khung nhìn bao trọn 2 điểm.
-function RecenterMap({ restaurantPos, customerPos }) {
-  const map = useMap();
-  useEffect(() => {
-    if (customerPos) {
-      const bounds = L.latLngBounds([
-        [restaurantPos.lat, restaurantPos.lng],
-        [customerPos.lat, customerPos.lng],
-      ]);
-      map.fitBounds(bounds, { padding: [50, 50] });
-    }
-  }, [customerPos]);
-  return null;
+// Custom icon red cho store
+const redStoreIcon = new L.Icon({
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+});
+
+
+function distance(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * Math.PI / 180) *
+    Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) ** 2;
+
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-export default function RealMap({ address, city }) {
-  // Bước 2: Khởi tạo 
-  const restaurantPos = {lat: 10.762622, lng: 106.660172}
+export default function RealMap({ address, city, selectedStore, setSelectedStore }) {
+  const [stores, setStores] = useState([]);
   const [customerPos, setCustomerPos] = useState(null);
   const [route, setRoute] = useState([]);
 
-  //Bước 3 — Geocoding: chuyển địa chỉ → tọa độ
+  // Load all stores
   useEffect(() => {
-    if(!address || !city) return;
+    fetch("/api/store")
+      .then((res) => res.json())
+      .then((data) => setStores(data));
+  }, []);
+
+  // Convert address → coordinates
+  useEffect(() => {
+    if (!address || !city) return;
 
     const query = encodeURIComponent(`${address}, ${city}, Vietnam`);
     fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`)
-      .then (res => res.json())
-      .then (data => {
-        if (data && data.length > 0) {
+      .then(res => res.json())
+      .then(data => {
+        if (data?.length > 0) {
           setCustomerPos({
             lat: parseFloat(data[0].lat),
             lng: parseFloat(data[0].lon),
           });
         }
-      })
-      .catch(err => console.error('Geocoding error:', err));
-  }, [address, city])
+      });
+  }, [address, city]);
 
-  // --- Bước 4: Gọi API OSRM để lấy tuyến đường thực
+  // When customer position changes → find closest store
   useEffect(() => {
-    if (!restaurantPos || !customerPos) return;
+    if (!customerPos || stores.length === 0) return;
 
-    const fetchRoute = async () => {
-      const url = `https://router.project-osrm.org/route/v1/driving/${restaurantPos.lng},${restaurantPos.lat};${customerPos.lng},${customerPos.lat}?overview=full&geometries=geojson`;
+    const sorted = [...stores].map(store => {
+      const { lat, lng } = store.address.coordinates;
+      return {
+        ...store,
+        distance: distance(customerPos.lat, customerPos.lng, lat, lng),
+      };
+    }).sort((a, b) => a.distance - b.distance);
 
-      try {
-        const res = await axios.get(url);
-        const coords = res.data.routes[0].geometry.coordinates.map((c) => [c[1], c[0]]);
-        setRoute(coords);
-      } catch (err) {
-        console.error("Error fetching route:", err);
-      }
-    };
+    setSelectedStore(sorted[0]); // chọn chi nhánh gần nhất
+  }, [customerPos, stores]);
 
-    fetchRoute();
-  }, [restaurantPos, customerPos]);
+  // Fetch route from selected store → customer
+  useEffect(() => {
+    if (!selectedStore || !customerPos) return;
+
+    const { lat, lng } = selectedStore.address.coordinates;
+    const url = `https://router.project-osrm.org/route/v1/driving/${lng},${lat};${customerPos.lng},${customerPos.lat}?overview=full&geometries=geojson`;
+
+    axios.get(url).then(res => {
+      const coords = res.data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+      setRoute(coords);
+    });
+  }, [selectedStore, customerPos]);
 
   return (
-    <div className="h-[400px] w-full rounded-lg overflow-hidden">
-      {/* Bước 5 — Vẽ bản đồ */}
+    <div className="h-[350px] w-full rounded-xl overflow-hidden border">
       <MapContainer
-        center={[restaurantPos.lat, restaurantPos.lng]}
-        zoom={13}
-        style={{ height: '100%', width: '100%' }}
+        center={[10.7626, 106.6601]}
+        zoom={12}
+        style={{ height: "100%", width: "100%" }}
       >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; OpenStreetMap contributors'
-        />
-        {/* Marker nhà hàng */}
-        <Marker position={[restaurantPos.lat, restaurantPos.lng]}>
-          <Popup>ST Pizza</Popup>
-        </Marker>
-        {/* Marker khách hàng */}
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+        {/* store markers */}
+        {stores.map((store, i) => (
+          <Marker
+            key={i}
+            position={[
+              store.address.coordinates.lat,
+              store.address.coordinates.lng
+            ]}
+            icon={redStoreIcon}
+          >
+            <Popup>
+              <b>{store.name}</b><br />
+              {store.address.street}, {store.address.city}
+            </Popup>
+          </Marker>
+        ))}
+
+        {/* customer marker */}
         {customerPos && (
-          <>
-            <Marker position={[customerPos.lat, customerPos.lng]}>
-              <Popup>Client: {address}, {city}</Popup>
-            </Marker>
-            {/* Vẽ đường nối hai vị trí */}
-            {route.length > 0 &&
-              <Polyline
-                positions={route}
-               color="blue"
-              />
-            }
-            <RecenterMap restaurantPos={restaurantPos} customerPos={customerPos} />
-          </>
+          <Marker position={[customerPos.lat, customerPos.lng]}>
+            <Popup>Khách hàng</Popup>
+          </Marker>
+        )}
+
+        {/* route */}
+        {route.length > 0 && (
+          <Polyline positions={route} color="blue" />
         )}
       </MapContainer>
     </div>

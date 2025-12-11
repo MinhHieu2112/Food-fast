@@ -1,14 +1,15 @@
 'use client';
 import useProfile from "@/components/UseProfile"
 import UserForm from "@/components/layout/UserForm";
-import {useEffect, useState} from "react"
-import {useParams, useRef} from "next/navigation"
+import {useEffect, useState, useRef} from "react"
+import {useParams, useRouter} from "next/navigation"
 import toast from "react-hot-toast"
 export default function EditUserPage() {
     const {loading, data} = useProfile();
     const {id} = useParams();
     const [user, setUser] = useState(null);
     const toastId = useRef(null);
+    const router = useRouter();
 
     useEffect(() => {
         if (!id) return;

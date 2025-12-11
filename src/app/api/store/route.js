@@ -34,7 +34,7 @@ export async function PUT(req) {
       return Response.json({ error: "Restaurant not found" }, { status: 404 });
     }
 
-    // RÀNG BUỘC — Bạn sẽ thêm gì cũng được ở đây
+    // RÀNG BUỘC
     // Ví dụ: không cho update nếu đang inactive
     if (store.status === "inactive") {
        return Response.json({ error: "Inactive restaurant cannot be edited" }, { status: 403 });

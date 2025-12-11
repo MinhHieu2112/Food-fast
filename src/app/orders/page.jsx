@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import UseProfile from "@/components/UseProfile"
 import Link from "next/link"
-import DeliveryTimer from "@/components/Map/DeliveryTimer"
+import DeliveryTimer from "@/components/Map/DeliveryProcess"
 
 export default function OrderPage() {
     const [orders, setOrders] = useState([]);
@@ -40,40 +40,65 @@ export default function OrderPage() {
     }
     return(
         <section className="mt-8 max-w-2xl mx-auto">
-
             <div className="mt-8 text-sm">
-                {/* Header row */}
-                <div className="grid grid-cols-6 font-semibold text-gray-700 border-b pb-3 mb-3 text-center">
-                    <div>Order ID</div>
-                    <div>Date</div>
-                    <div>Name</div>
-                    <div>Payment</div>
-                    <div>Status</div>
-                    <div>Details</div>
+                <div className="overflow-x-auto rounded-xl">
+                    <table className="w-full border-collapse text-center">
+                        <thead>
+                            <tr className="bg-gray-100 text-gray-700 text-sm">
+                                <th className="py-3 px-4">Order ID</th>
+                                <th className="py-3 px-4">Date</th>
+                                <th className="py-3 px-4">Name</th>
+                                <th className="py-3 px-4">Payment</th>
+                                <th className="py-3 px-4">Status</th>
+                                <th className="py-3 px-4">Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {orders?.length > 0 && orders.map(order => (
+                                <tr 
+                                    key={order._id} 
+                                    className="border-t hover:bg-gray-50 transition-colors"
+                                >
+                                    <td className="py-3 px-4 font-mono text-xs">
+                                        {order._id.slice(-5)}
+                                    </td>
+
+                                    <td className="py-3 px-4">
+                                        {new Date(order.createdAt).toLocaleDateString('vi-VN')}
+                                    </td>
+
+                                    <td className="py-3 px-4">
+                                        {order.name}
+                                    </td>
+
+                                    <td className="py-3 px-4">
+                                        <span
+                                            className={
+                                                (order.paid ? "bg-green-500 " : "bg-red-400 ") +
+                                                "text-white px-3 py-1 rounded-md text-xs"
+                                            }
+                                        >
+                                            {order.paid ? "Paid" : "Not Paid"}
+                                        </span>
+                                    </td>
+
+                                    <td className="py-3 px-4">
+                                        {order.status}
+                                    </td>
+
+                                    <td className="py-3 px-4">
+                                        <Link 
+                                            href={`/orders/${order._id}`} 
+                                            className="text-blue-600 hover:underline"
+                                        >
+                                            View
+                                        </Link>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
-                {orders?.length > 0 && orders.map(order => (
-                    <div 
-                        key={order._id} 
-                        className="grid grid-cols-6 items-center bg-gray-50 hover:bg-gray-100 transition-colors mb-2 p-3 rounded-lg text-center">
-                            <div className="font-mono text-xs">{order._id.slice(-5)}</div>
-                            <div>{new Date(order.createdAt).toLocaleDateString('vi-VN')}</div>
-                            <div>{order.name}</div>
-                            <div>
-                                <span className={
-                                    (order.paid ? 'bg-green-500' : 'bg-red-400')
-                                    + 'text-white py-1 px-3 rounded-md'
-                                }>
-                                    {order.paid ? 'Paid' : 'Not paid'}
-                                </span>
-                            </div>
-                            <div className="flex justify-center">
-                                <DeliveryTimer initialMinutes={1} orderId={order._id.slice(-5)}/>
-                            </div>
-                            <div>
-                                <Link href={`/orders/${order._id}`} className="text-blue-600 hover:underline">View</Link>
-                            </div>
-                    </div>
-                ))}
             </div>
         </section>
     );

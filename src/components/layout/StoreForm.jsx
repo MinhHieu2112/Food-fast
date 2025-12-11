@@ -30,7 +30,6 @@ export default function StoreForm({initialStore, onSubmit}) {
             setPhone(initialStore.phone || '');
             setEmail(initialStore.email || '');
             setStatus(initialStore.status || 'active');
-            setDay(initialStore.operatingHours?.dayOfWeek || '6');
             setOpenTime(initialStore.operatingHours?.openTime || '08:00');
             setCloseTime(initialStore.operatingHours?.closeTime || '22:00');
             setDeliveryZones(initialStore.deliveryZones || '');
@@ -48,7 +47,7 @@ export default function StoreForm({initialStore, onSubmit}) {
                 onSubmit(ev, {
                     name, address: { street, district, city, country, coordinates: { lat, lng } },
                     phone, email, status,
-                    operatingHours: { dayOfWeek: day, openTime, closeTime },
+                    operatingHours: { openTime, closeTime },
                     deliveryZones: { radius, minOrder, deliveryFee }
                 });
             }} >

@@ -51,50 +51,50 @@ export default function DronesPage() {
     return (
     <section className="max-w-2xl mx-auto mt-8">
         <div className="mt-8 text-sm">
-
-            {/* Header */}
-            <div className="grid grid-cols-4 font-semibold text-gray-700 border-b pb-3 mb-3 text-center">
-                <div>Name</div>
-                <div>Status</div>
-                <div>Battery</div>
-                <div></div> {/* Cột nút View */}
+            <div className="overflow-x-auto rounded-xl">
+                <table className="w-full border-collapse text-center">
+                    <thead>
+                        <tr className="bg-gray-100 text-gray-700 text-sm">
+                            <th className="py-3 px-4">Name</th>
+                            <th className="py-3 px-4">Status</th>
+                            <th className="py-3 px-4">Battery</th>
+                            <th className="py-3 px-4">Detail</th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {/* Rows */}
+                        {drones?.length > 0 && drones.map(drone => (
+                            <tr
+                                key={drone._id}
+                                className="border-t hover:bg-gray-50 transition-colors"
+                            >
+                                {/* Drone Name */}
+                                <td className="py-3 px-4">
+                                    {drone.name || <span className="italic">No name</span>}
+                                </td>
+                                {/* Status */}
+                                <td className="py-3 px-4">
+                                    {drone.status}
+                                </td>
+                                {/* Battery */}
+                                <td className="py-3 px-4">
+                                    {drone.battery}
+                                </td>
+                                {/* View Button */}
+                                <td className="py-3 px-4">
+                                    <Link
+                                        className="btn-register bg-white text-sm hover:bg-gray-200 px-3 py-1 rounded-lg"
+                                        href={'/drones/' + drone._id}
+                                    >
+                                        View
+                                    </Link>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
-
-            {/* Rows */}
-            {drones?.length > 0 && drones.map(drone => (
-                <div
-                    key={drone._id}
-                    className="grid grid-cols-4 bg-gray-100 rounded-lg mb-2 p-2 px-4 items-center text-center"
-                >
-
-                    {/* Drone Name */}
-                    <div className="text-gray-700">
-                        {drone.name || <span className="italic">No name</span>}
-                    </div>
-
-                    {/* Status */}
-                    <div className="text-gray-500">
-                        {drone.status}
-                    </div>
-
-                    {/* Battery */}
-                    <div className="text-gray-500">
-                        {drone.battery}
-                    </div>
-
-                    {/* View Button */}
-                    <div>
-                        <Link
-                            className="btn-register bg-white text-sm hover:bg-gray-200 px-3 py-1 rounded-lg"
-                            href={'/drones/' + drone._id}
-                        >
-                            View
-                        </Link>
-                    </div>
-
-                </div>
-            ))}
-
+            
         </div>
     </section>
 );

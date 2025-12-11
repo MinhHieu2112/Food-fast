@@ -16,6 +16,7 @@ export default function OrderForm({order}) {
                         <h2 className="text-center font-semibold mb-2">Delivery Information</h2>
                         <ul className="text-sm mt-2">
                             <li>Created at: {new Date(order.createdAt).toLocaleString('vi-VN')}</li>
+                            <li>From: {order.store.name}</li>
                             <li>Order ID: {order._id.slice(-5)}</li>
                             <li>Name: {order.name}</li>
                             <li>Address: {order.streetAddress}</li>
@@ -25,20 +26,31 @@ export default function OrderForm({order}) {
                         <h2 className="text-center font-semibold mb-2 mt-2">Order Information</h2>
                         {order.cartProducts?.map((product, index) => (
                             <li key={index} className="border-b pb-2 mt-2 list-none text-sm">
-                                <div className="flex justify-between">
-                                    <strong>{product.name}</strong>
-                                    <span>Price: ${product.basePrice}</span>
+                                <div className="grow">
+                                    <div className="flex justify-between">
+                                        <strong>{product.name}</strong>
+                                        <span>Price: ${product.basePrice}</span>
+                                    </div>
+
+                                    {/* Size */}
+                                    {product.size && (
+                                        <div className="flex justify-between">
+                                            Size: {product.size.name}
+                                            <span>+${product.size.price}</span>
+                                        </div>
+                                    )}
+                                    
+                                    {product.extras?.length > 0 && (
+                                        <ul className="list-disc">
+                                            {product.extras.map((extra, i) => (
+                                                <li key={i} className="flex justify-between">
+                                                    <span>{extra.name}</span> 
+                                                    <span>+${extra.price}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
                                 </div>
-                                {product.extras?.length > 0 && (
-                                    <ul className="ml-6 list-disc">
-                                        {product.extras.map((extra, i) => (
-                                            <li key={i} className="flex justify-between">
-                                                <span>{extra.name}</span> 
-                                                <span>+${extra.price}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
                             </li>
                         ))}
                         <div className="flex justify-between font-semibold text-sm mt-2">

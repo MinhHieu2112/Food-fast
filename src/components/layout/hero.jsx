@@ -59,7 +59,7 @@ export default function Hero() {
               Here you can manage orders, menus, and categories.
             </p>
             <div className="flex gap-4 text-sm">
-              <Link href="/dashboard" className="justify-center bg-primary uppercase flex items-center gap-2 text-white px-4 py-2 rounded-full">
+              <Link href="/statistic" className="justify-center bg-primary uppercase flex items-center gap-2 text-white px-4 py-2 rounded-full">
                 Go to Dashboard <Right />
               </Link>
             </div>

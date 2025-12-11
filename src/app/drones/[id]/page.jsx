@@ -73,19 +73,19 @@ export default function EditDronesPage() {
                                 <input type="text" value={drone.name || ''} readOnly/>
                             </div>
 
-                            <div>
-                                <label>Battery</label>
-                                <input type="text" value={drone.battery || ''} readOnly/>
-                            </div>
-
-                            <div>
-                                <label>Status</label>
-                                <input type="text" value={drone.status || ''} readOnly/>
-                            </div>
-                            
-                            <div>
-                                <label>Max Payload</label>
-                                <input type="text" value={drone.maxPayload || ''} readOnly/>
+                            <div className="grid grid-cols-3 gap-3">
+                                 <div>
+                                    <label>Battery</label>
+                                    <input type="text" value={drone.battery || ''} readOnly/>
+                                </div>
+                                <div>
+                                    <label>Status</label>
+                                    <input type="text" value={drone.status || ''} readOnly/>
+                                </div>                                
+                                <div>
+                                    <label>Max Payload</label>
+                                    <input type="text" value={drone.maxPayload || ''} readOnly/>
+                                </div>
                             </div>
 
                             <div className="grid grid-cols-2 gap-2">
